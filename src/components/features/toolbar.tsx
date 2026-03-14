@@ -4,7 +4,7 @@ import { Separator } from "../ui/separator";
 import { ImageHistogram } from "./image-histogram";
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty";
 import { FolderOpen } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { TransformSettings } from "./transform";
 
 export function ToolbarContent() {
 	const { image } = useImage();
@@ -29,6 +29,9 @@ export function ToolbarContent() {
 			<div className="space-y-1">
 				<h4 className="font-semibold">Histograma da imagem</h4>
 				<ImageHistogram/>
+			</div>
+			<div>
+				<TransformSettings/>
 			</div>
 		</div>
 	)
