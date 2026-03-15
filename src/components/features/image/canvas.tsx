@@ -1,11 +1,12 @@
 import { useImage } from "@/context/image-context"
 import { useEffect, useRef } from "react";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty";
-import { ImageSelector } from "./image-selector";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { ImageSelector } from "@/components/features/image/selector";
 import { Image } from "lucide-react";
+import { RotateTransformHandle } from "../transforms/rotate";
 
 export function ImageCanvas() {
-	const { image } = useImage();
+	const { image, transform } = useImage();
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
 	useEffect(() => {
@@ -45,5 +46,13 @@ export function ImageCanvas() {
 		)
 	}
 
-	return (<canvas ref={canvasRef} className="w-full h-full border-2" />);
+	return (
+		<div className="w-full h-full border-2 relative">
+			<canvas ref={canvasRef} className="w-full h-full" />
+			<div className="absolute inset-0 pointer-events-none">
+				{transform === "rotate" && (<RotateTransformHandle/>)}
+			</div>
+		</div>
+	);
 }
+

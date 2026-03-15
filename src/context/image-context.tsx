@@ -1,9 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, type ReactNode } from "react";
 
+export type ImageTransform = "inverse" | "rotate" | "gamma" | "log" | "contrast";
+
 type ImageContextType = {
 	image: ImageData | null;
 	setImage: (image: ImageData) => void;
+	transform: ImageTransform | null;
+	setTransform: (transform: ImageTransform | null) => void;
 }
 
 const ImageContext = createContext<ImageContextType | null>(null);
@@ -14,9 +18,10 @@ interface ImageProviderProps {
 
 export function ImageProvider({ children }: ImageProviderProps) {
 	const [image, setImage] = useState<ImageData | null>(null);
+	const [transform, setTransform] = useState<ImageTransform | null>(null);
 	
 	return (
-		<ImageContext.Provider value={{ image, setImage }}>
+		<ImageContext.Provider value={{ image, setImage, transform, setTransform }}>
 			{children}
 		</ImageContext.Provider>
 	)

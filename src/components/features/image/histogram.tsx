@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChartContainer } from "../ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
 import { useImage } from "@/context/image-context";
 import { Bar, BarChart } from "recharts";
 import { luminance } from "@/lib/utils";
@@ -34,8 +34,8 @@ export function ImageHistogram() {
 
 	return (
 		<ChartContainer
-			className="w-full h-20 border-2 bg-primary-foreground rounded-sm"
-			config={{ count: { color: "var(--chart-2)" } }}
+			className="w-full h-20 border-2"
+			config={{ count: { color: "var(--foreground)" } }}
 		>
 			<BarChart data={values}>
 				<Bar dataKey="count" fill="var(--color-count)" />
