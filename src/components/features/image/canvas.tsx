@@ -68,7 +68,7 @@ export function ImageCanvas() {
 			<div className="absolute inset-0 pointer-events-none">
 				{transform === "rotate" && (<RotateTransformHandle />)}
 				{transform === "curve" && (<ToneCurveTransformHandle />)}
-				{(transform === "crop") && (<CropHandle onPointsChange={() => { }}/>)}
+				{transform === "crop" && (<CropHandle />)}
 			</div>
 		</div>
 	);

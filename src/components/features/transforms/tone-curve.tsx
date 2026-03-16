@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { useImage } from "@/context/image-context";
 import { useContainerSize } from "@/hooks/use-size";
-import { movePoints, generatePoints } from "@/lib/curve";
+import { moveCurvePoints, generatePoints } from "@/lib/curve";
 import { Spline } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
@@ -96,7 +96,7 @@ export function ToneCurveTransformHandle() {
 				}
 
 				const [px, py] = d3.pointer(event, svgRef.current);
-				const newPoints = movePoints(points, d, px, py, xScale, yScale);
+				const newPoints = moveCurvePoints(points, d, px, py, xScale, yScale);
 
 				setPoints(newPoints);
 				setImage(curve(image, newPoints));

@@ -7,7 +7,7 @@ export function generateCropPoints(): Point[] {
 	]
 }
 
-export function cropPoints(
+export function moveCropPoints(
 	points: Point[],
 	d: Point,
 	px: number,

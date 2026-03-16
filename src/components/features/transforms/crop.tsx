@@ -1,8 +1,8 @@
 import { useContainerSize } from "@/hooks/use-size";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
 import type { Point } from "@/lib/utils";
-import { cropPoints, generateCropPoints } from "@/lib/crop";
+import { generateCropPoints, moveCropPoints } from "@/lib/crop";
 import { useImage } from "@/context/image-context";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Crop } from "lucide-react";
@@ -37,17 +37,11 @@ export function CropTransform() {
 	)
 }
 
-interface CropHandleProps {
-	onPointsChange: (points: Point[]) => void;
-}
-
-export function CropHandle({ onPointsChange }: CropHandleProps) {
+export function CropHandle() {
 	const { ref, size } = useContainerSize();
-	const { image } = useImage();
+	const { frame, setFrame } = useImage();
 
 	const svgRef = useRef<SVGSVGElement | null>(null);
-
-	const [points, setPoints] = useState(generateCropPoints());
 
 	const width = size.width;
 	const height = size.height;
@@ -58,23 +52,23 @@ export function CropHandle({ onPointsChange }: CropHandleProps) {
 	const lines = useMemo(() => {
 		return [
 			{
-				x1: xScale(points[0].x), y1: yScale(points[0].y),
-				x2: xScale(points[1].x), y2: yScale(points[0].y),
+				x1: xScale(frame[0].x), y1: yScale(frame[0].y),
+				x2: xScale(frame[1].x), y2: yScale(frame[0].y),
 			},
 			{
-				x1: xScale(points[1].x), y1: yScale(points[0].y),
-				x2: xScale(points[1].x), y2: yScale(points[1].y),
+				x1: xScale(frame[1].x), y1: yScale(frame[0].y),
+				x2: xScale(frame[1].x), y2: yScale(frame[1].y),
 			},
 			{
-				x1: xScale(points[1].x), y1: yScale(points[1].y),
-				x2: xScale(points[0].x), y2: yScale(points[1].y),
+				x1: xScale(frame[1].x), y1: yScale(frame[1].y),
+				x2: xScale(frame[0].x), y2: yScale(frame[1].y),
 			},
 			{
-				x1: xScale(points[0].x), y1: yScale(points[1].y),
-				x2: xScale(points[0].x), y2: yScale(points[0].y),
+				x1: xScale(frame[0].x), y1: yScale(frame[1].y),
+				x2: xScale(frame[0].x), y2: yScale(frame[0].y),
 			}
 		]
-	}, [points, xScale, yScale])
+	}, [frame, xScale, yScale])
 
 	useEffect(() => {
 		if (!svgRef.current) {
@@ -89,24 +83,25 @@ export function CropHandle({ onPointsChange }: CropHandleProps) {
 			}))
 			.on("drag", (event, d) => {
 				const [mx, my] = d3.pointer(event, svgRef.current);
-				setPoints(currentPoints => {
-					return cropPoints(currentPoints, d, mx, my, xScale, yScale);
+				setFrame(currentFrame => {
+					return moveCropPoints(currentFrame, d, mx, my, xScale, yScale);
 				});
 			});
 
 		svg.selectAll<SVGCircleElement, Point>("circle")
-			.data(points)
+			.data(frame)
 			.call(drag);
 	}, [width, height])
+	
+	useEffect(() => setFrame(generateCropPoints()), []);
 
 	return (
 		<div
 			ref={ref}
-			className="w-full h-full bg-muted/50 pointer-events-auto"
+			className="w-full h-full z-10 bg-muted/50 pointer-events-auto"
 		>
-
 			<svg ref={svgRef} width={width} height={height}>
-				{points.map((p) => (
+				{frame.map((p) => (
 					<circle
 						key={p.id}
 						cx={xScale(p.x)}

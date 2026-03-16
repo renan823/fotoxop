@@ -58,7 +58,7 @@ a escala de cores e a escala real da tela.
 A parte de "puxar" vizinhos próximos foi feita
 com ajuda de IA.
  */
-export function movePoints(
+export function moveCurvePoints(
 	points: Point[],
 	d: Point,
 	px: number,
