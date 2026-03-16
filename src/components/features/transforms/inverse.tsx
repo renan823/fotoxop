@@ -42,7 +42,6 @@ export function InverseTransform() {
 						Aplicar
 					</Button>
 				</div>
-
 			</ItemContent>
 		</Item>
 	)

@@ -1,5 +1,10 @@
 import { Slider } from "../ui/slider";
 
+/*
+Componentes de input reutilizáveis.
+Sliders para range e valor simples.
+ */
+
 interface ValueSliderProps {
 	value: number;
 	setValue: (v: number) => void;

@@ -29,7 +29,6 @@ export function RotateTransform() {
 						Aplicar
 					</Button>
 				</div>
-
 			</ItemContent>
 		</Item>
 	)

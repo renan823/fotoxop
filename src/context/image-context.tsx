@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, type ReactNode } from "react";
 
-export type ImageTransform = "inverse" | "rotate" | "gamma" | "log" | "contrast";
+export type ImageTransform = "inverse" | "rotate" | "gamma" | "log" | "contrast" | "curve";
 
 type ImageContextType = {
 	image: ImageData | null;

@@ -4,6 +4,14 @@ import { useImage } from "@/context/image-context";
 import { Bar, BarChart } from "recharts";
 import { luminance } from "@/lib/utils";
 
+/*
+Componente que exibe o histograma de intensidade
+de uma imagem.
+
+A imagem é lida e convertida para luminância.
+Os valores são armazenados nos bins e exobidos
+em um gráfico de barras.
+ */
 export function ImageHistogram() {
 	const { image } = useImage();
 

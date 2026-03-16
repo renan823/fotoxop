@@ -4,7 +4,11 @@ import { Separator } from "../ui/separator";
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty";
 import { FolderOpen } from "lucide-react";
 import { TransformSettings } from "./transforms";
+import { DownloadImage } from "./image/download";
 
+/*
+Barra de ferramentas do app.
+ */
 export function ToolbarContent() {
 	const { image } = useImage();
 
@@ -24,7 +28,7 @@ export function ToolbarContent() {
 	}
 
 	return (
-		<TransformSettings/>
+		<TransformSettings />
 	)
 }
 
@@ -34,7 +38,10 @@ export function Toolbar() {
 			<div className="space-y-2 p-4">
 				<div className="flex items-center justify-between">
 					<h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight text-balance">Fotoxop</h1>
-					<ModeToggle />
+					<div className="flex gap-4">
+						<DownloadImage/>
+						<ModeToggle />
+					</div>
 				</div>
 				<Separator />
 			</div>

@@ -42,7 +42,6 @@ export function LogTransform() {
 						Aplicar
 					</Button>
 				</div>
-
 			</ItemContent>
 		</Item>
 	)

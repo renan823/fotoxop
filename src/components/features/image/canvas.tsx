@@ -4,7 +4,22 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import { ImageSelector } from "@/components/features/image/selector";
 import { Image } from "lucide-react";
 import { RotateTransformHandle } from "../transforms/rotate";
+import { ToneCurveTransformHandle } from "../transforms/tone-curve";
 
+/*
+Componente que renderiza a imagem.
+
+A imagem é lida do contexto, uma tela
+é criada (usando o canvas) e os dados
+são carregados.
+As atualizações são automáticas, já que
+o canvas é atualizado sempre que o estado
+global da imagem muda.
+
+Esse compoennte também renderiza um "overlay" que
+fica sobre o canvas.
+É nesse "overlay" que certas interações ocorrem.
+ */
 export function ImageCanvas() {
 	const { image, transform } = useImage();
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -50,7 +65,8 @@ export function ImageCanvas() {
 		<div className="w-full h-full border-2 relative">
 			<canvas ref={canvasRef} className="w-full h-full" />
 			<div className="absolute inset-0 pointer-events-none">
-				{transform === "rotate" && (<RotateTransformHandle/>)}
+				{transform === "rotate" && (<RotateTransformHandle />)}
+				{transform === "curve" && (<ToneCurveTransformHandle/>)}
 			</div>
 		</div>
 	);

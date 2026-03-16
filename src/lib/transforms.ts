@@ -1,3 +1,5 @@
+import { interpolatePoints, type Point } from "./curve";
+
 /*
 Transformação inversa.
  */
@@ -79,24 +81,20 @@ export function contrast(image: ImageData, rangeA: number[], rangeB: number[]): 
 	return result;
 }
 
-export type Point = {
-	x: number;
-	y: number;
-}
-
 /*
-Implementação da curva de intensidade (tone curve).
-O usuário arrasta os pontos no gráfico da cor.
-X é a cor original e Y é a cor final.
-Usando interpolação (aqui usei Bezier), todos os valores
-entre 0 e 255 são mapeados pra uma tabela (lookup)
-Então é só aplicar pixel a pixel.
+Função que aplica a interpolação entre pontos
+pra gerar uma "curva de intesidades".
+
+Os pontos são manipulados diretamente pelo usuário,
+que arrasta na tela e cria uma curva.
+Os pontos são interpolados e a tabela de valores
+tabela[x] = y é gerada.
  */
 export function curve(image: ImageData, points: Point[]): ImageData {
 	const result = new ImageData(image.width, image.height);
 	result.data.set(image.data);
 
-	const lookup: Record<number, number> = {};
+	const lookup = interpolatePoints(points);
 
 	for (let i = 0; i < result.data.length; i += 4) {
 		result.data[i] = lookup[result.data[i]]

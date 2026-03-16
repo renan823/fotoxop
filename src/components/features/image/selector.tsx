@@ -3,6 +3,13 @@ import { Input } from "@/components/ui/input";
 import { useImage } from "@/context/image-context";
 import { toast } from "sonner";
 
+/*
+Componente seletor da imagem.
+
+A imagem escolhida é carregada em um canvas pra
+utilizar a API nativa (facilita MUITO o processo).
+Os dados da imagem são salvos no contexto global.
+ */
 export function ImageSelector() {
 	const { setImage } = useImage();
 
