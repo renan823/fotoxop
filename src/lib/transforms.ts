@@ -1,4 +1,5 @@
-import { interpolatePoints, type Point } from "./curve";
+import { interpolatePoints } from "./curve";
+import type { Point } from "./utils";
 
 /*
 Transformação inversa.

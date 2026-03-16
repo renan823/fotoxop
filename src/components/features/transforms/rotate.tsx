@@ -23,10 +23,10 @@ export function RotateTransform() {
 				</p>
 				<div className="flex justify-end pt-2">
 					<Button
-						onClick={() => setTransform("rotate")}
+						onClick={() => setTransform(transform !== "rotate" ? "rotate" : null)}
 						variant={transform !== "rotate" ? "default" : "outline"}
 					>
-						Aplicar
+						{transform === "rotate" ? "Feito" : "Aplicar"} 
 					</Button>
 				</div>
 			</ItemContent>

@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { useImage } from "@/context/image-context";
 import { useContainerSize } from "@/hooks/use-size";
-import { movePoints, generatePoints, type Point } from "@/lib/curve";
+import { movePoints, generatePoints } from "@/lib/curve";
 import { Spline } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { curve } from "@/lib/transforms";
+import type { Point } from "@/lib/utils";
 
 export function ToneCurveTransform() {
 	const { transform, setTransform } = useImage();
@@ -73,7 +74,7 @@ export function ToneCurveTransformHandle() {
 		.domain([0, 255])
 		.range([height, 0])
 
-	const line = d3.line<any>()
+	const line = d3.line<Point>()
 		.x(d => xScale(d.x))
 		.y(d => yScale(d.y))
 		.curve(d3.curveCatmullRom)
@@ -84,27 +85,27 @@ export function ToneCurveTransformHandle() {
 		}
 
 		const svg = d3.select(svgRef.current);
+		const drag = d3.drag<SVGCircleElement, Point>()
+			.subject((_, d) => ({
+				x: xScale(d.x),
+				y: yScale(d.y)
+			}))
+			.on("drag", (event, d) => {
+				if (!image) {
+					return;
+				}
 
-		function handleDrag (
-			event: d3.D3DragEvent<SVGCircleElement, Point, Point>,
-			d: Point
-		) {
-			if (!image) {
-				return;
-			}
-			
-			const [px, py] = d3.pointer(event, svgRef.current);
-			const newPoints = movePoints(points, d, px, py, xScale, yScale);
-			
-			setPoints(newPoints);
-			
-			setImage(curve(image, newPoints));
-		};
+				const [px, py] = d3.pointer(event, svgRef.current);
+				const newPoints = movePoints(points, d, px, py, xScale, yScale);
 
-		const drag = d3.drag<SVGCircleElement, Point>();
-		drag.on("drag", handleDrag);
-		svg.selectAll<SVGCircleElement, Point>("circle").data(points).call(drag);
-	}, [points])
+				setPoints(newPoints);
+				setImage(curve(image, newPoints));
+			});
+
+		svg.selectAll<SVGCircleElement, Point>("circle")
+			.data(points)
+			.call(drag);
+	}, [width, height])
 
 	return (
 		<div

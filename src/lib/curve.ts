@@ -1,10 +1,4 @@
-import type { ScaleLinear } from "d3";
-
-export type Point = {
-	id: number;
-	x: number;
-	y: number;
-}
+import type { Point, Scale } from "./utils";
 
 /*
 Gera os pontos entre o começo e o fim da escala.
@@ -28,8 +22,6 @@ export function generatePoints(n: number): Point[] {
 	points.push(B);
 	return points;
 }
-
-type Scale = ScaleLinear<number, number, never>;
 
 /*
 Limita a movimentação de um ponto "esbarrando"
@@ -73,10 +65,14 @@ export function movePoints(
 	py: number,
 	xScale: Scale,
 	yScale: Scale,
-) {
+): Point[] {
 	// Pegar ponto atual
 	const index = points.findIndex(p => p.id === d.id);
 	if (index === -1) {
+		return points;
+	}
+	
+	if (px === undefined || py === undefined) {
 		return points;
 	}
 

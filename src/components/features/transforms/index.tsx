@@ -5,12 +5,14 @@ import { LogTransform } from "./log";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ContrastTransform } from "./contrast";
 import { ToneCurveTransform } from "./tone-curve";
+import { CropTransform } from "./crop";
 
 export function TransformSettings() {
 	return (
 		<ScrollArea className="h-[90vh]">
 			<div className="space-y-4 px-4 pb-4">
 				<RotateTransform />
+				<CropTransform/>
 				<ToneCurveTransform/>
 				<InverseTransform />
 				<GammaTransform />

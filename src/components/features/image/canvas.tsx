@@ -5,6 +5,7 @@ import { ImageSelector } from "@/components/features/image/selector";
 import { Image } from "lucide-react";
 import { RotateTransformHandle } from "../transforms/rotate";
 import { ToneCurveTransformHandle } from "../transforms/tone-curve";
+import { CropHandle } from "../transforms/crop";
 
 /*
 Componente que renderiza a imagem.
@@ -66,7 +67,8 @@ export function ImageCanvas() {
 			<canvas ref={canvasRef} className="w-full h-full" />
 			<div className="absolute inset-0 pointer-events-none">
 				{transform === "rotate" && (<RotateTransformHandle />)}
-				{transform === "curve" && (<ToneCurveTransformHandle/>)}
+				{transform === "curve" && (<ToneCurveTransformHandle />)}
+				{(transform === "crop") && (<CropHandle onPointsChange={() => { }}/>)}
 			</div>
 		</div>
 	);
