@@ -1,4 +1,4 @@
-import type { Point, Scale } from "./utils";
+import type { Point, Scale } from "./types";
 
 /*
 Gera os pontos entre o começo e o fim da escala.

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ChartContainer } from "@/components/ui/chart";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { Bar, BarChart } from "recharts";
 import { luminance } from "@/lib/utils";
 

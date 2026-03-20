@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { log } from "@/lib/transforms";
 import { Sparkle } from "lucide-react";
 import { toast } from "sonner";

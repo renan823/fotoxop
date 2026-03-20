@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { Download } from "lucide-react";
 import { useState } from "react";
 
@@ -16,12 +16,12 @@ export function DownloadImage() {
 		if (!image) {
 			return;
 		}
-		
+
 		let path = name.split(".")[0];
 		if (path.length === 0) {
 			path = "imagem";
 		}
-		
+
 		path += ".jpg";
 
 		const canvas = document.createElement("canvas");
@@ -42,12 +42,12 @@ export function DownloadImage() {
 			a.click();
 
 			URL.revokeObjectURL(url);
-			
+
 			setName("imagem");
 			setOpen(false);
 		}, "image/jpeg", 0.9);
 	}
-	
+
 	if (!image) {
 		return (<></>);
 	}

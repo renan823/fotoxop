@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Contrast } from "lucide-react";
 import { RangeSlider } from "../utils";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { useState } from "react";
 import { toast } from "sonner";
 import { contrast } from "@/lib/transforms";

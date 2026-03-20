@@ -1,12 +1,12 @@
 import { useContainerSize } from "@/hooks/use-size";
 import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
-import type { Point } from "@/lib/utils";
 import { generateCropPoints, moveCropPoints } from "@/lib/crop";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Point } from "@/lib/types";
 
 export function CropTransform() {
 	const { transform, setTransform } = useImage();
@@ -83,16 +83,14 @@ export function CropHandle() {
 			}))
 			.on("drag", (event, d) => {
 				const [mx, my] = d3.pointer(event, svgRef.current);
-				setFrame(currentFrame => {
-					return moveCropPoints(currentFrame, d, mx, my, xScale, yScale);
-				});
+				setFrame(moveCropPoints(frame, d, mx, my, xScale, yScale));
 			});
 
 		svg.selectAll<SVGCircleElement, Point>("circle")
 			.data(frame)
 			.call(drag);
 	}, [width, height])
-	
+
 	useEffect(() => setFrame(generateCropPoints()), []);
 
 	return (

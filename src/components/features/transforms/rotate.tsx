@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ValueSlider } from "../utils";
@@ -7,6 +7,7 @@ import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { useContainerSize } from "@/hooks/use-size";
 import * as d3 from "d3";
 import { generateCropPoints } from "@/lib/crop";
+import { rotate } from "@/lib/transforms";
 
 export function RotateTransform() {
 	const { transform, setTransform } = useImage();
@@ -38,10 +39,8 @@ export function RotateTransform() {
 }
 
 export function RotateTransformHandle() {
-	const [theta, setTheta] = useState(0);
-
 	const { ref, size } = useContainerSize();
-	const { frame, setFrame } = useImage();
+	const { frame, setFrame, image, setImage, rotation, setRotation } = useImage();
 
 	const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -101,14 +100,14 @@ export function RotateTransformHandle() {
 			<div className="absolute rounded-sm pointer-events-auto w-1/3 p-4 bg-muted/50 z-20 space-y-2">
 				<div className="flex items-center justify-between text-sm font-medium">
 					<span>Angulo</span>
-					<span className="text-muted-foreground">{theta}</span>
+					<span className="text-muted-foreground">{rotation}</span>
 				</div>
 				<ValueSlider
 					min={-45}
 					max={45}
 					step={1}
-					value={theta}
-					setValue={setTheta}
+					value={rotation}
+					setValue={setRotation}
 				/>
 				<div className="flex justify-center">
 					<Button>

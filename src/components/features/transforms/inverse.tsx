@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { inverse } from "@/lib/transforms";
 import { FlipHorizontal } from "lucide-react";
 import { toast } from "sonner";

@@ -1,4 +1,4 @@
-import type { Point, Scale } from "./utils";
+import type { Point, Scale } from "./types";
 
 export function generateCropPoints(): Point[] {
 	return [

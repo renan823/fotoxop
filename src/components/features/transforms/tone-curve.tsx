@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/context/image-context";
+import { useImage } from "@/store/image";
 import { useContainerSize } from "@/hooks/use-size";
 import { moveCurvePoints, generatePoints } from "@/lib/curve";
 import { Spline } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { curve } from "@/lib/transforms";
-import type { Point } from "@/lib/utils";
+import type { Point } from "@/lib/types";
 
 export function ToneCurveTransform() {
 	const { transform, setTransform } = useImage();
@@ -56,12 +56,11 @@ https://d3js.org/d3-drag
  */
 export function ToneCurveTransformHandle() {
 	const { ref, size } = useContainerSize();
-	const { image, setImage } = useImage();
+	const { image, setImage, curvePoints, setCurvePoints } = useImage();
 
 	const svgRef = useRef<SVGSVGElement | null>(null);
 
 	const maxPoints = 20;
-	const [points, setPoints] = useState(generatePoints(maxPoints));
 
 	const width = size.width;
 	const height = size.height;
@@ -80,6 +79,10 @@ export function ToneCurveTransformHandle() {
 		.curve(d3.curveCatmullRom)
 
 	useEffect(() => {
+		setCurvePoints(generatePoints(maxPoints));
+	}, [])
+
+	useEffect(() => {
 		if (!svgRef.current) {
 			return;
 		}
@@ -95,17 +98,29 @@ export function ToneCurveTransformHandle() {
 					return;
 				}
 
+				const points = useImage.getState().curvePoints;
 				const [px, py] = d3.pointer(event, svgRef.current);
 				const newPoints = moveCurvePoints(points, d, px, py, xScale, yScale);
 
-				setPoints(newPoints);
-				setImage(curve(image, newPoints));
-			});
+				setCurvePoints(newPoints);
+			})
+			.on("end", () => {
+				if (!image) {
+					return;
+				}
+
+				const points = useImage.getState().curvePoints;
+				setImage(curve(image, points));
+			})
 
 		svg.selectAll<SVGCircleElement, Point>("circle")
-			.data(points)
+			.data(curvePoints)
 			.call(drag);
 	}, [width, height])
+
+	useEffect(() => {
+		console.log("POINTS RESETOU", curvePoints);
+	}, []);
 
 	return (
 		<div
@@ -114,12 +129,12 @@ export function ToneCurveTransformHandle() {
 		>
 			<svg ref={svgRef} width={width} height={height}>
 				<path
-					d={line(points) || ""}
+					d={line(curvePoints) || ""}
 					fill="none"
 					stroke="yellow"
 					strokeWidth={3}
 				/>
-				{points.map((p) => (
+				{curvePoints.map((p) => (
 					<circle
 						key={p.id}
 						cx={xScale(p.x)}

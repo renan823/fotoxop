@@ -1,10 +1,11 @@
-import { useImage } from "@/context/image-context";
-import { ModeToggle } from "../theme-provider";
-import { Separator } from "../ui/separator";
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty";
+import { useImage } from "@/store/image";
+import { ModeToggle } from "@/components/theme-provider";
+import { Separator } from "@/components/ui/separator";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { FolderOpen } from "lucide-react";
 import { TransformSettings } from "./transforms";
 import { DownloadImage } from "./image/download";
+import { RemoveImage } from "./image/remove";
 
 /*
 Barra de ferramentas do app.
@@ -39,7 +40,8 @@ export function Toolbar() {
 				<div className="flex items-center justify-between">
 					<h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight text-balance">Fotoxop</h1>
 					<div className="flex gap-4">
-						<DownloadImage/>
+						<RemoveImage />
+						<DownloadImage />
 						<ModeToggle />
 					</div>
 				</div>

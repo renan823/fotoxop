@@ -1,11 +1,6 @@
-import { useImage } from "@/context/image-context"
+import { useImage } from "@/store/image"
 import { useEffect, useRef } from "react";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { ImageSelector } from "@/components/features/image/selector";
-import { Image } from "lucide-react";
-import { RotateTransformHandle } from "../transforms/rotate";
-import { ToneCurveTransformHandle } from "../transforms/tone-curve";
-import { CropHandle } from "../transforms/crop";
+
 
 /*
 Componente que renderiza a imagem.
@@ -22,7 +17,7 @@ fica sobre o canvas.
 É nesse "overlay" que certas interações ocorrem.
  */
 export function ImageCanvas() {
-	const { image, transform } = useImage();
+	const { image } = useImage();
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
 	useEffect(() => {
@@ -43,34 +38,7 @@ export function ImageCanvas() {
 		ctx.putImageData(image, 0, 0);
 	}, [image])
 
-	if (image === null) {
-		return (
-			<Empty>
-				<EmptyHeader>
-					<EmptyMedia variant="icon">
-						<Image/>
-					</EmptyMedia>
-					<EmptyTitle>Nenhuma imagem carregada</EmptyTitle>
-					<EmptyDescription>
-						Selecione uma imagem para começar a editar
-					</EmptyDescription>
-				</EmptyHeader>
-				<EmptyContent>
-					<ImageSelector />
-				</EmptyContent>
-			</Empty>
-		)
-	}
-
 	return (
-		<div className="w-full h-full border-2 relative">
-			<canvas ref={canvasRef} className="w-full h-full" />
-			<div className="absolute inset-0 pointer-events-none">
-				{transform === "rotate" && (<RotateTransformHandle />)}
-				{transform === "curve" && (<ToneCurveTransformHandle />)}
-				{transform === "crop" && (<CropHandle />)}
-			</div>
-		</div>
+		<canvas ref={canvasRef} className="w-full h-full" />
 	);
 }
-
