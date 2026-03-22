@@ -2,8 +2,8 @@ import type { Point, Scale } from "./types";
 
 export function generateCropPoints(): Point[] {
 	return [
-		{ id: 0, x: 0.5, y: 0.5 },
-		{ id: 1, x: 99.5, y: 99.5 },
+		{ id: 0, x: 0, y: 0 },
+		{ id: 1, x: 100, y: 100 },
 	]
 }
 
@@ -41,8 +41,8 @@ export function moveCropPoints(
         newY = Math.min(newY, B.y - 1);
 	}
     
-    const finalX = Math.max(0.5, Math.min(newX, 99.5));
-    const finalY = Math.max(0.5, Math.min(newY, 99.5));
+    const finalX = Math.max(0, Math.min(newX, 100));
+    const finalY = Math.max(0, Math.min(newY, 100));
 
 	const newA = { ...A, x: finalX, y: finalY };
     return points.map(p => p.id === d.id ? newA : p);

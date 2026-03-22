@@ -84,7 +84,8 @@ export function RotateTransformHandle() {
 						key={p.id}
 						cx={xScale(p.x)}
 						cy={yScale(p.y)}
-						r={6}
+						style={{ cursor: "pointer" }}
+						r={8}
 						fill="yellow"
 					/>
 				))}
@@ -93,7 +94,7 @@ export function RotateTransformHandle() {
 						key={idx}
 						x1={l.x1} y1={l.y1}
 						x2={l.x2} y2={l.y2}
-						stroke="yellow" strokeWidth={2}
+						stroke="yellow" strokeWidth={4}
 					/>
 				))}
 			</svg>

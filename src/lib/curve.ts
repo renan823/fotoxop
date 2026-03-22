@@ -8,18 +8,18 @@ export function generatePoints(n: number): Point[] {
 	const A: Point = { id: 0, x: 5, y: 5 };
 	const B: Point = { id: n - 1, x: 250, y: 250 };
 
-	const points: Point[] = [A];
+	const points: Point[] = [];
 
-	for (let i = 0; i < n - 2; i++) {
-		const t = i / (n - 2);
+	for (let i = 0; i < n; i++) {
+		const t = i / (n - 1);
+
 		points.push({
-			id: i + 1,
+			id: i,
 			x: A.x + t * (B.x - A.x),
 			y: A.y + t * (B.y - A.y),
-		})
+		});
 	}
 
-	points.push(B);
 	return points;
 }
 
