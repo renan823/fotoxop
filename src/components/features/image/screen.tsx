@@ -1,7 +1,7 @@
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageSelector } from "@/components/features/image/selector";
 import { Image } from "lucide-react";
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { ImageCanvas } from "./canvas";
 import { ToneCurveTransformHandle } from "../transforms/tone-curve";
 import { RotateTransformHandle } from "../transforms/rotate";
@@ -30,13 +30,13 @@ export function EditorScreen() {
     }
 
     return (
-       <div className="w-full h-full border-2 relative">
-			<ImageCanvas/>
-			<div className="absolute inset-0 pointer-events-none">
-				{transform === "rotate" && (<RotateTransformHandle />)}
-				{transform === "curve" && (<ToneCurveTransformHandle />)}
-				{transform === "crop" && (<CropHandle />)}
-			</div>
-		</div>
+        <div className="w-full h-full border-2 relative">
+            <ImageCanvas />
+            <div className="absolute inset-0 pointer-events-none">
+                {transform === "rotate" && (<RotateTransformHandle />)}
+                {transform === "curve" && (<ToneCurveTransformHandle />)}
+                {transform === "crop" && (<CropHandle />)}
+            </div>
+        </div>
     )
 }

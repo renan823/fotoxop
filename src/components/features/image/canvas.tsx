@@ -1,4 +1,4 @@
-import { useImage } from "@/store/image"
+import { useImage } from "@/context/image"
 import { useEffect, useRef } from "react";
 
 

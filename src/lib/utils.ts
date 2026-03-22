@@ -31,37 +31,3 @@ export async function parseImage(file: File): Promise<ImageData> {
 
 	return ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
-
-
-/*
-Funções utilitárias pra manipular a imagem.
-Como ImageData armazena [R, G, B, A...],
-helpers ajudam na manipulação pixel a pixel.
- */
-
-export function getImageIndex(img: ImageData, x: number, y: number) {
-	return (y * img.width + x) * 4;
-}
-
-export function getImagePixel(img: ImageData, x: number, y: number) {
-	const i = getImageIndex(img, x, y);
-	return [
-		img.data[i],
-		img.data[i + 1],
-		img.data[i + 2],
-		img.data[i + 3],
-	];
-}
-
-export function setImagePixel(
-	img: ImageData,
-	x: number,
-	y: number,
-	[r, g, b, a]: number[]
-) {
-	const i = getImageIndex(img, x, y);
-	img.data[i] = r;
-	img.data[i + 1] = g;
-	img.data[i + 2] = b;
-	img.data[i + 3] = a;
-}

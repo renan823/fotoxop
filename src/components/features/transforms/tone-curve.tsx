@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { useContainerSize } from "@/hooks/use-size";
 import { moveCurvePoints, generatePoints } from "@/lib/curve";
 import { Spline } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { curve } from "@/lib/transforms";
 import type { Point } from "@/lib/types";
+import { useWorker } from "@/hooks/use-worker";
+import * as Comlink from "comlink";
 
 export function ToneCurveTransform() {
 	const { transform, setTransform } = useImage();
@@ -59,8 +60,9 @@ export function ToneCurveTransformHandle() {
 	const { image, setImage, curvePoints, setCurvePoints } = useImage();
 
 	const svgRef = useRef<SVGSVGElement | null>(null);
+	const worker = useWorker()
 
-	const maxPoints = 20;
+	const maxPoints = 30;
 
 	const width = size.width;
 	const height = size.height;
@@ -104,23 +106,23 @@ export function ToneCurveTransformHandle() {
 
 				setCurvePoints(newPoints);
 			})
-			.on("end", () => {
+			.on("end", async () => {
 				if (!image) {
 					return;
 				}
 
 				const points = useImage.getState().curvePoints;
-				setImage(curve(image, points));
+				const result = await worker.ApplyCurve(
+					image,
+					points
+				)
+				setImage(result);
 			})
 
 		svg.selectAll<SVGCircleElement, Point>("circle")
 			.data(curvePoints)
 			.call(drag);
 	}, [width, height])
-
-	useEffect(() => {
-		console.log("POINTS RESETOU", curvePoints);
-	}, []);
 
 	return (
 		<div
@@ -139,7 +141,7 @@ export function ToneCurveTransformHandle() {
 						key={p.id}
 						cx={xScale(p.x)}
 						cy={yScale(p.y)}
-						r={6}
+						r={4}
 						fill="yellow"
 					/>
 				))}

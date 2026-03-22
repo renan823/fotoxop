@@ -2,7 +2,7 @@ import { useContainerSize } from "@/hooks/use-size";
 import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
 import { generateCropPoints, moveCropPoints } from "@/lib/crop";
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";

@@ -1,24 +1,33 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/store/image";
-import { inverse } from "@/lib/transforms";
+import { useImage } from "@/context/image";
 import { FlipHorizontal } from "lucide-react";
+import * as Comlink from "comlink";
+import { useWorker } from "@/hooks/use-worker";
 import { toast } from "sonner";
 
 export function InverseTransform() {
 	const { image, setImage, setTransform } = useImage();
 
-	function handleApply() {
+	const worker = useWorker();
+
+	async function handleApply() {
 		if (!image) {
 			return;
 		}
 
 		try {
 			setTransform("inverse");
-			setImage(inverse(image));
+			
+			const result = await worker.ApplyInverse(
+				Comlink.transfer(image, [image.data.buffer]),
+			);
+
+			setImage(result);
 		} catch {
-			toast.error("Algo deu errado")
+			toast.error("Algo deu errado");
 		}
+
 	}
 
 	return (

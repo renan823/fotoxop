@@ -1,6 +1,6 @@
 import { type ChangeEvent } from "react";
 import { Input } from "@/components/ui/input";
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { toast } from "sonner";
 import { parseImage } from "@/lib/utils";
 

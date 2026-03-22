@@ -1,21 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/store/image";
-import { log } from "@/lib/transforms";
+import { useImage } from "@/context/image";
 import { Sparkle } from "lucide-react";
 import { toast } from "sonner";
+import * as Comlink from "comlink";
+import { useWorker } from "@/hooks/use-worker";
 
 export function LogTransform() {
 	const { image, setImage, setTransform } = useImage();
 
-	function handleApply() {
+	const worker = useWorker()
+
+	async function handleApply() {
 		if (!image) {
 			return;
 		}
 
 		try {
 			setTransform("log");
-			setImage(log(image));
+
+			const result = await worker.ApplyLog(
+				Comlink.transfer(image, [image.data.buffer]),
+			);
+
+			setImage(result);
 		} catch {
 			toast.error("Algo deu errado");
 		}

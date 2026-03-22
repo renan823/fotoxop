@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ValueSlider } from "../utils";

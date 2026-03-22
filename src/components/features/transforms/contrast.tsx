@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Contrast } from "lucide-react";
 import { RangeSlider } from "../utils";
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { useState } from "react";
 import { toast } from "sonner";
-import { contrast } from "@/lib/transforms";
+import * as Comlink from "comlink";
+import { useWorker } from "@/hooks/use-worker";
 
 export function ContrastTransform() {
 	const { image, setImage, setTransform } = useImage();
@@ -13,19 +14,27 @@ export function ContrastTransform() {
 	const [rangeA, setRangeA] = useState([10, 50]);
 	const [rangeB, setRangeB] = useState([100, 150]);
 
-	function handleApply() {
+	const worker = useWorker();
+
+	async function handleApply() {
 		if (!image) {
 			return;
 		}
 
 		try {
 			setTransform("contrast");
-			setImage(contrast(image, rangeA, rangeB));
+			
+			const result = await worker.ApplyContrast(
+				Comlink.transfer(image, [image.data.buffer]),
+				rangeA,
+				rangeB
+			);
+
+			setImage(result);
 		} catch {
 			toast.error("Algo deu errado");
 		}
 	}
-
 
 	return (
 		<Item variant="outline" className="w-full">

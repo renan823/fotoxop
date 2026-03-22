@@ -90,7 +90,7 @@ export function moveCurvePoints(
 
 	// Puxar vizinhos um pouco pra suavizar
 	const dy = point.y - points[index].y;
-	const influence = 0.75;
+	const influence = 1;
 
 	const updated = points.map((p, i) => {
 		if (i === index) {
@@ -122,7 +122,7 @@ function curveCatmullRom(p0: number, p1: number, p2: number, p3: number, t: numb
 	const m2 = (2 * p0 - 5 * p1 + 4 * p2 - p3) * Math.pow(t, 2);
 	const m3 = (-p0 + 3 * p1 - 3 * p2 + p3) * Math.pow(t, 3);
 
-	return 0.5 * (m0 + m1 + m2 + m3)
+	return 0.5 * (m0 + m1 + m2 + m3);
 }
 
 /*

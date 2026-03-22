@@ -1,29 +1,40 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { useImage } from "@/store/image";
-import { gamma } from "@/lib/transforms";
+import { useImage } from "@/context/image";
+import * as Comlink from "comlink";
 import { Sparkle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ValueSlider } from "../utils";
+import { useWorker } from "@/hooks/use-worker";
 
 export function GammaTransform() {
 	const { image, setImage, setTransform } = useImage();
 
+	const worker = useWorker();
+
 	const [G, setG] = useState(1);
 	const [C, setC] = useState(1);
 
-	function handleApply() {
+	async function handleApply() {
 		if (!image) {
 			return;
 		}
 
 		try {
 			setTransform("gamma");
-			setImage(gamma(image, G, C));
+
+			const result = await worker.ApplyGamma(
+				Comlink.transfer(image, [image.data.buffer]),
+				G,
+				C
+			);
+
+			setImage(result);
 		} catch {
 			toast.error("Algo deu errado");
 		}
+
 	}
 
 	return (

@@ -1,4 +1,4 @@
-import { useImage } from "@/store/image";
+import { useImage } from "@/context/image";
 import { ModeToggle } from "@/components/theme-provider";
 import { Separator } from "@/components/ui/separator";
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
