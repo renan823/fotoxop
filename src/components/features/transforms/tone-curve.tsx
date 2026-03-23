@@ -8,7 +8,6 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Point } from "@/lib/types";
 import { useWorker } from "@/hooks/use-worker";
-import * as Comlink from "comlink";
 
 export function ToneCurveTransform() {
 	const { transform, setTransform } = useImage();

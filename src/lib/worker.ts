@@ -1,4 +1,4 @@
-import { brightness, contrast, curve, gamma, inverse, log, rotate, translate } from "./transforms";
+import { brightness, contrast, crop, curve, gamma, inverse, log, rotate, translate } from "./transforms";
 import * as Comlink from "comlink";
 import type { Point, Scale } from "./types";
 import { moveCurvePoints } from "./curve";
@@ -34,6 +34,10 @@ export const TransformWorker = {
 
     ApplyBrightness(image: ImageData, value: number): ImageData {
         return brightness(image, value);
+    },
+
+    ApplyCrop(image: ImageData, frame: Point[]): ImageData {
+        return crop(image, frame);
     },
 
     MoveCurvePoints(

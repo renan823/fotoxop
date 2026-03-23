@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useImage } from "@/context/image";
 import { RefreshCcw } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { ValueSlider } from "../utils";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { useContainerSize } from "@/hooks/use-size";
 import * as d3 from "d3";
 import { generateCropPoints } from "@/lib/crop";
-import { rotate } from "@/lib/transforms";
 
 export function RotateTransform() {
 	const { transform, setTransform } = useImage();
@@ -40,7 +39,7 @@ export function RotateTransform() {
 
 export function RotateTransformHandle() {
 	const { ref, size } = useContainerSize();
-	const { frame, setFrame, image, setImage, rotation, setRotation } = useImage();
+	const { frame, setFrame, rotation, setRotation } = useImage();
 
 	const svgRef = useRef<SVGSVGElement | null>(null);
 

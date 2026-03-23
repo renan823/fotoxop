@@ -42,6 +42,46 @@ export function translate(image: ImageData, tx: number, ty: number): ImageData {
 	return result;
 }
 
+export function crop(image: ImageData, frame: Point[]): ImageData {
+	const { width, height, data } = image;
+
+	const p1 = frame[0];
+	const p2 = frame[1];
+
+	const minX = Math.max(0, Math.floor(Math.min(p1.x, p2.x)));
+	const maxX = Math.min(width, Math.ceil(Math.max(p1.x, p2.x)));
+
+	const minY = Math.max(0, Math.floor(Math.min(p1.y, p2.y)));
+	const maxY = Math.min(height, Math.ceil(Math.max(p1.y, p2.y)));
+
+	const newWidth = maxX - minX;
+	const newHeight = maxY - minY;
+
+	if (newWidth <= 0 || newHeight <= 0) {
+		return new ImageData(1, 1);
+	}
+
+	const newData = new Uint8ClampedArray(newWidth * newHeight * 4);
+
+	for (let y = 0; y < newHeight; y++) {
+		const srcY = y + minY;
+
+		for (let x = 0; x < newWidth; x++) {
+			const srcX = x + minX;
+
+			const srcIdx = (srcY * width + srcX) * 4;
+			const dstIdx = (y * newWidth + x) * 4;
+
+			newData[dstIdx] = data[srcIdx];
+			newData[dstIdx + 1] = data[srcIdx + 1];
+			newData[dstIdx + 2] = data[srcIdx + 2];
+			newData[dstIdx + 3] = data[srcIdx + 3];
+		}
+	}
+
+	return new ImageData(newData, newWidth, newHeight);
+}
+
 export function rotate(image: ImageData, theta: number, frame: Point[]): ImageData {
 	const { width, height, data } = image;
 	const result = new ImageData(width, height);

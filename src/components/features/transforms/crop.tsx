@@ -7,6 +7,9 @@ import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Point } from "@/lib/types";
+import { useWorker } from "@/hooks/use-worker";
+import { toast } from "sonner";
+import * as Comlink from "comlink";
 
 export function CropTransform() {
 	const { transform, setTransform } = useImage();
@@ -39,9 +42,10 @@ export function CropTransform() {
 
 export function CropHandle() {
 	const { ref, size } = useContainerSize();
-	const { frame, setFrame } = useImage();
+	const { frame, setFrame, image, setImage, setTransform } = useImage();
 
 	const svgRef = useRef<SVGSVGElement | null>(null);
+	const worker = useWorker();
 
 	const width = size.width;
 	const height = size.height;
@@ -69,6 +73,34 @@ export function CropHandle() {
 			}
 		]
 	}, [frame, xScale, yScale])
+
+	async function handleApply() {
+		if (!image) {
+			return;
+		}
+
+		try {
+			setTransform("crop");
+
+			const scaleX = image.width / 100;
+			const scaleY = image.height / 100;
+
+			const converted = frame.map(p => ({
+				...p,
+				x: p.x * scaleX,
+				y: (100 - p.y) * scaleY
+			}));
+
+			const result = await worker.ApplyCrop(
+				Comlink.transfer(image, [image.data.buffer]),
+				converted
+			);
+
+			setImage(result);
+		} catch {
+			toast.error("Algo deu errado");
+		}
+	}
 
 	useEffect(() => {
 		if (!svgRef.current) {
@@ -98,7 +130,7 @@ export function CropHandle() {
 	return (
 		<div
 			ref={ref}
-			className="w-full h-full z-10 bg-muted/50 pointer-events-auto"
+			className="w-full h-full z-10 bg-muted/50 pointer-events-auto flex justify-start items-start relative"
 		>
 			<svg ref={svgRef} width={width} height={height}>
 				{frame.map((p) => (
@@ -120,6 +152,14 @@ export function CropHandle() {
 					/>
 				))}
 			</svg>
+			<div className="absolute pointer-events-auto py-4 px-8 bg-muted/50 z-20 space-y-2">
+				<div className="flex justify-center">
+					<Button onClick={handleApply}>
+						<Crop />
+						Aplicar
+					</Button>
+				</div>
+			</div>
 		</div>
 	)
 }
