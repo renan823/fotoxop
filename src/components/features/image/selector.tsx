@@ -9,32 +9,28 @@ Componente seletor da imagem.
 
 O arquivo é lido como um ImageData.
 Os dados da imagem são salvos no contexto global.
- */
+*/
 export function ImageSelector() {
-	const { setImage } = useImage();
+    const { setImage } = useImage();
 
-	async function handleLoad(evt: ChangeEvent<HTMLInputElement>) {
-		if (!evt.target.files || evt.target.files.length === 0) {
-			return;
-		}
+    async function handleLoad(evt: ChangeEvent<HTMLInputElement>) {
+        if (!evt.target.files || evt.target.files.length === 0) {
+            return;
+        }
 
-		try {
-			const file = evt.target.files[0];
-			const image = await parseImage(file);
+        try {
+            const file = evt.target.files[0];
+            const image = await parseImage(file);
 
-			setImage(image);
-		} catch {
-			toast.error("Erro ao carregar imagem");
-		}
-	}
+            setImage(image);
+        } catch {
+            toast.error("Erro ao carregar imagem");
+        }
+    }
 
-	return (
-		<div>
-			<Input
-				type="file"
-				accept="image/*"
-				onChange={handleLoad}
-			/>
-		</div>
-	)
+    return (
+        <div>
+            <Input type="file" accept="image/*" onChange={handleLoad} />
+        </div>
+    );
 }

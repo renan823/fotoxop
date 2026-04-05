@@ -1,80 +1,134 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { useImage } from "@/context/image";
+import { ImageDownloadManager, ImageFormats } from "@/lib/download";
 import { Download } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
+/*
+Componente para download da imagem.
+Usa o estado atual do app, e permite
+escolher o formato de download.
+*/
 export function DownloadImage() {
-	const { image } = useImage();
+    const { image } = useImage();
 
-	const [name, setName] = useState("imagem");
-	const [open, setOpen] = useState(false);
+    const [name, setName] = useState("imagem");
+    const [format, setFormat] = useState("image/jpeg");
+    const [open, setOpen] = useState(false);
 
-	function handleDownload() {
-		if (!image) {
-			return;
-		}
+    function handleDownload() {
+        if (!image) {
+            return;
+        }
 
-		let path = name.split(".")[0];
-		if (path.length === 0) {
-			path = "imagem";
-		}
+        const canvas = document.createElement("canvas");
+        canvas.width = image.width;
+        canvas.height = image.height;
 
-		path += ".jpg";
+        const ctx = canvas.getContext("2d")!;
+        ctx.putImageData(image, 0, 0);
 
-		const canvas = document.createElement("canvas");
-		canvas.width = image.width;
-		canvas.height = image.height;
+        try {
+            const manager = new ImageDownloadManager(canvas, name, format);
+            manager.download();
+        } catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message);
+			} else {
+				toast.error("Falha ao salvar imagem");
+            }
+        } finally {
+            setName("imagem");
+            setOpen(false);
+        }
+    }
 
-		const ctx = canvas.getContext("2d")!;
-		ctx.putImageData(image, 0, 0);
+    if (!image) {
+        return <></>;
+    }
 
-		canvas.toBlob(blob => {
-			if (!blob) return;
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger render={<Button variant="outline" size="icon" />}>
+                <Download />
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle className="text-lg">Baixar imagem</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-2">
+                    <Label>Salvar como...</Label>
+                    <div className="flex gap-4">
+                        <Input
+                            type="text"
+                            value={name}
+                            onChange={(evt) => setName(evt.target.value)}
+                        />
+                        <FormatSelector format={format} setFormat={setFormat} />
+                    </div>
+                </div>
+                <DialogFooter>
+					<DialogClose render={<Button variant="ghost" />}>
+						Cancelar
+                    </DialogClose>
+                    <Button onClick={handleDownload}>Baixar</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
-			const url = URL.createObjectURL(blob);
+interface FormatSelectorProps {
+    format: string;
+    setFormat: (f: string) => void;
+}
 
-			const a = document.createElement("a");
-			a.href = url;
-			a.download = path;
-			a.click();
+function FormatSelector({ format, setFormat }: FormatSelectorProps) {
+    const items = Object.keys(ImageFormats).map((k) => ({
+        label: ImageFormats[k],
+        value: k,
+    }));
 
-			URL.revokeObjectURL(url);
+    function onSelect(value: string | null) {
+        if (value) {
+            setFormat(value);
+        }
+    }
 
-			setName("imagem");
-			setOpen(false);
-		}, "image/jpeg", 0.9);
-	}
-
-	if (!image) {
-		return (<></>);
-	}
-
-	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger render={<Button variant="outline" size="icon" />}>
-				<Download />
-			</DialogTrigger>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Baixar imagem</DialogTitle>
-				</DialogHeader>
-				<div className="space-y-2">
-					<Label>Salvar como...</Label>
-					<InputGroup>
-						<InputGroupInput type="text" value={name} onChange={evt => setName(evt.target.value)} />
-						<InputGroupAddon align="inline-end">
-							<InputGroupText>.jpg</InputGroupText>
-						</InputGroupAddon>
-					</InputGroup>
-				</div>
-				<DialogFooter>
-					<DialogClose>Cancelar</DialogClose>
-					<Button onClick={handleDownload}>Baixar</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
-	)
+    return (
+        <Select items={items} value={format} onValueChange={onSelect}>
+            <SelectTrigger className="w-1/5">
+                <SelectValue placeholder="Formato" />
+            </SelectTrigger>
+            <SelectContent className="w-1/5">
+                <SelectGroup>
+                    {items.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                            {item.label}
+                        </SelectItem>
+                    ))}
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    );
 }

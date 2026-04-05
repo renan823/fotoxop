@@ -1,4 +1,11 @@
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import {
+    Empty,
+    EmptyContent,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
 import { ImageSelector } from "@/components/features/image/selector";
 import { Image } from "lucide-react";
 import { useImage } from "@/context/image";
@@ -7,6 +14,13 @@ import { ToneCurveTransformHandle } from "../transforms/tone-curve";
 import { RotateTransformHandle } from "../transforms/rotate";
 import { CropHandle } from "../transforms/crop";
 
+/*
+Componente para exibir o canvas
+com a imagem e adicionar um overlay sobre ele.
+
+É no overlay que certas operação são sobrepostas
+ao canvas para editar a imagem.
+*/
 export function EditorScreen() {
     const { image, transform } = useImage();
 
@@ -26,17 +40,17 @@ export function EditorScreen() {
                     <ImageSelector />
                 </EmptyContent>
             </Empty>
-        )
+        );
     }
 
     return (
-        <div className="w-full h-full border-2 relative">
+        <div className="relative h-full w-full border-2">
             <ImageCanvas />
-            <div className="absolute inset-0 pointer-events-none">
-                {transform === "rotate" && (<RotateTransformHandle />)}
-                {transform === "curve" && (<ToneCurveTransformHandle />)}
-                {transform === "crop" && (<CropHandle />)}
+            <div className="pointer-events-none absolute inset-0">
+                {transform === "rotate" && <RotateTransformHandle />}
+                {transform === "curve" && <ToneCurveTransformHandle />}
+                {transform === "crop" && <CropHandle />}
             </div>
         </div>
-    )
+    );
 }

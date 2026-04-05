@@ -7,50 +7,47 @@ import * as Comlink from "comlink";
 import { useWorker } from "@/hooks/use-worker";
 
 export function LogTransform() {
-	const { image, setImage, setTransform } = useImage();
+    const { image, setImage, setTransform, loading } = useImage();
 
-	const worker = useWorker()
+    const worker = useWorker();
 
-	async function handleApply() {
-		if (!image) {
-			return;
-		}
+    async function handleApply() {
+        if (!image) {
+            return;
+        }
 
-		try {
-			setTransform("log");
+        try {
+            setTransform("log");
 
-			const result = await worker.ApplyLog(
-				Comlink.transfer(image, [image.data.buffer]),
-			);
+            const result = await worker.ApplyLog(
+                Comlink.transfer(image, [image.data.buffer])
+            );
 
-			setImage(result);
-		} catch {
-			toast.error("Algo deu errado");
-		}
-	}
+            setImage(result);
+        } catch {
+            toast.error("Algo deu errado");
+        }
+    }
 
-	return (
-		<Item variant="outline" className="w-full">
-			<ItemHeader>
-				<ItemTitle className="flex items-center gap-2">
-					<Sparkle className="size-4" />
-					Transformação Log
-				</ItemTitle>
-			</ItemHeader>
+    return (
+        <Item variant="outline" className="w-full">
+            <ItemHeader>
+                <ItemTitle className="flex items-center gap-2">
+                    <Sparkle className="size-4" />
+                    Transformação Log
+                </ItemTitle>
+            </ItemHeader>
 
-			<ItemContent className="space-y-4">
-				<p className="text-sm text-muted-foreground">
-					Transformação logarítmica para realçar regiões escuras.
-				</p>
-				<div className="flex justify-end pt-2">
-					<Button
-						onClick={handleApply}
-						disabled={!image}
-					>
-						Aplicar
-					</Button>
-				</div>
-			</ItemContent>
-		</Item>
-	)
+            <ItemContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                    Transformação logarítmica para realçar regiões escuras.
+                </p>
+                <div className="flex justify-end pt-2">
+                    <Button onClick={handleApply} disabled={!image || loading}>
+                        Aplicar
+                    </Button>
+                </div>
+            </ItemContent>
+        </Item>
+    );
 }

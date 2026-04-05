@@ -1,54 +1,70 @@
-import { generateCropPoints } from "@/lib/crop";
+import { CropManager } from "@/lib/transforms";
 import type { ImageTransform, Point } from "@/lib/types";
 import { create } from "zustand";
 
-type ImageStore = {
-	image: ImageData | null;
-	preview: ImageData | null;
-	transform: ImageTransform | null;
-	rotation: number;
-	frame: Point[];
-	curvePoints: Point[];
+/*
+Estado do app.
 
-	setImage: (image: ImageData) => void;
-	setTransform: (transform: ImageTransform | null) => void;
-	setRotation: (r: number) => void;
-	setFrame: (frame: Point[]) => void;
+Responsável por armazenar diversas informações
+usandas na renderização e manipulação
+da imagem.
+*/
+
+type ImageStore = {
+    image: ImageData | null;
+    preview: ImageData | null;
+    transform: ImageTransform | null;
+    rotation: number;
+    frame: Point[];
+	curvePoints: Point[];
+	loading: boolean;
+
+    setImage: (image: ImageData) => void;
+    setTransform: (transform: ImageTransform | null) => void;
+    setRotation: (r: number) => void;
+    setFrame: (frame: Point[]) => void;
 	setCurvePoints: (points: Point[]) => void;
-	clean: () => void;
-}
+	setLoading: (loading: boolean) => void;
+    clean: () => void;
+};
 
 export const useImage = create<ImageStore>((set) => ({
-	image: null,
-	preview: null,
-	transform: null,
-	rotation: 0,
-	frame: generateCropPoints(),
+    image: null,
+    preview: null,
+    transform: null,
+    rotation: 0,
+    frame: CropManager.init(),
 	curvePoints: [],
-	
-	setImage: (img) => {
-		set({ image: img });
+    loading: false,
+
+    setImage: (img) => {
+        set({ image: img });
+    },
+
+    setTransform: (transform) => {
+        set({ transform });
+    },
+
+    setRotation: (rotation) => {
+        set({ rotation });
+    },
+
+    setFrame: (frame) => {
+        set({ frame });
+    },
+
+    setCurvePoints: (points) => {
+        set({ curvePoints: points });
+	},
+    
+	setLoading: (loading) => {
+		set({ loading });
 	},
 
-	setTransform: (transform) => {
-		set({ transform });
-	},
-
-	setRotation: (rotation) => {
-		set({ rotation });
-	},
-
-	setFrame: (frame) => {
-		set({ frame });
-	},
-
-	setCurvePoints: (points) => {
-		set({ curvePoints: points });
-	},
-	
-	clean: () => set({
-		image: null,
-		preview: null,
-		transform: null,
-	})
-}))
+	clean: () =>
+        set({
+            image: null,
+            preview: null,
+            transform: null,
+        }),
+}));

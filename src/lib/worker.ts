@@ -1,55 +1,70 @@
-import { brightness, contrast, crop, curve, gamma, inverse, log, rotate, translate } from "./transforms";
 import * as Comlink from "comlink";
-import type { Point, Scale } from "./types";
-import { moveCurvePoints } from "./curve";
+import type { Point } from "./types";
+import {
+    BrightnessTransform,
+    ContrastTransform,
+    CropTransform,
+    GammaTransform,
+    InverseTransform,
+    LogTransform,
+    RotateTransform,
+    ToneCurveTransform,
+    TranslateTransform,
+} from "./transforms";
 
+/*
+Web Worker para execução das rotinas em
+uma thread separada.
+Sem usar workers, a thread principal congela
+durante operações mais pesadas (aqui, todas são
+relativamente pesadas).
+*/
 export const TransformWorker = {
-    ApplyInverse(image: ImageData): ImageData {
-        return inverse(image);
+    ApplyBrightness(image: ImageData, value: number): ImageData {
+        return BrightnessTransform.execute(image, value);
     },
 
-    ApplyTranslate(image: ImageData, tx: number, ty: number): ImageData {
-        return translate(image, tx, ty);
-    },
-
-    ApplyRotate(image: ImageData, theta: number, frame: Point[]): ImageData {
-        return rotate(image, theta, frame);
-    },
-
-    ApplyGamma(image: ImageData, G: number, C: number): ImageData {
-        return gamma(image, G, C);
-    },
-
-    ApplyLog(image: ImageData): ImageData {
-        return log(image);
-    },
-
-    ApplyContrast(image: ImageData, rangeA: number[], rangeB: number[]): ImageData {
-        return contrast(image, rangeA, rangeB);
+    ApplyContrast(
+        image: ImageData,
+        rangeA: number[],
+        rangeB: number[]
+    ): ImageData {
+        return ContrastTransform.execute(image, rangeA, rangeB);
     },
 
     ApplyCurve(image: ImageData, points: Point[]): ImageData {
-        return curve(image, points);
-    },
-
-    ApplyBrightness(image: ImageData, value: number): ImageData {
-        return brightness(image, value);
+        return ToneCurveTransform.execute(image, points);
     },
 
     ApplyCrop(image: ImageData, frame: Point[]): ImageData {
-        return crop(image, frame);
+        return CropTransform.execute(image, frame);
     },
 
-    MoveCurvePoints(
-        points: Point[],
-        d: Point,
-        px: number,
-        py: number,
-        xScale: Scale,
-        yScale: Scale,
-    ): Point[] {
-        return moveCurvePoints(points, d, px, py, xScale, yScale);
-    }
+    ApplyInverse(image: ImageData): ImageData {
+        return InverseTransform.execute(image);
+    },
+
+    ApplyTranslate(image: ImageData, tx: number, ty: number): ImageData {
+        return TranslateTransform.execute(image, tx, ty);
+    },
+
+    ApplyRotate(
+        image: ImageData,
+        theta: number,
+    ): ImageData {
+        return RotateTransform.execute(
+            image,
+            theta,
+        );
+    },
+
+    ApplyGamma(image: ImageData, G: number, C: number): ImageData {
+        return GammaTransform.execute(image, G, C);
+    },
+
+    ApplyLog(image: ImageData): ImageData {
+        return LogTransform.execute(image);
+    },
 };
 
 export type TransformWorkerAPI = typeof TransformWorker;

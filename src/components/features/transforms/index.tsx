@@ -6,19 +6,41 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ContrastTransform } from "./contrast";
 import { ToneCurveTransform } from "./tone-curve";
 import { CropTransform } from "./crop";
+import { BrightnessTransform } from "./brightness";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Ruler, WandSparkles } from "lucide-react";
 
 export function TransformSettings() {
-	return (
-		<ScrollArea className="h-[90vh]">
-			<div className="space-y-4 px-4 pb-4">
-				<RotateTransform />
-				<CropTransform/>
-				<ToneCurveTransform/>
-				<InverseTransform />
-				<GammaTransform />
-				<LogTransform />
-				<ContrastTransform/>
-			</div>
-		</ScrollArea>
-	)
+    return (
+        <Tabs defaultValue="geometric">
+            <TabsList>
+                <TabsTrigger value="geometric">
+                    <Ruler />
+                    Geométricas
+                </TabsTrigger>
+                <TabsTrigger value="intensity">
+                    <WandSparkles />
+                    Intensidade
+                </TabsTrigger>
+            </TabsList>
+            <TabsContent value="geometric">
+                <div className="space-y-4 pb-4">
+                    <RotateTransform />
+                    <CropTransform />
+                </div>
+            </TabsContent>
+            <TabsContent value="intensity">
+                <ScrollArea className="h-[75vh]">
+                    <div className="space-y-4 pb-4 pr-4">
+                        <ToneCurveTransform />
+                        <InverseTransform />
+                        <BrightnessTransform />
+                        <GammaTransform />
+                        <LogTransform />
+                        <ContrastTransform />
+                    </div>
+                </ScrollArea>
+            </TabsContent>
+        </Tabs>
+    );
 }

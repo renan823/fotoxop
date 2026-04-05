@@ -1,20 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { Contrast } from "lucide-react";
-import { RangeSlider } from "../utils";
 import { useImage } from "@/context/image";
+import * as Comlink from "comlink";
+import { Sparkle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import * as Comlink from "comlink";
+import { ValueSlider } from "../utils";
 import { useWorker } from "@/hooks/use-worker";
 
-export function ContrastTransform() {
+export function BrightnessTransform() {
     const { image, setImage, setTransform, loading } = useImage();
 
-    const [rangeA, setRangeA] = useState([10, 50]);
-    const [rangeB, setRangeB] = useState([100, 150]);
-
     const worker = useWorker();
+
+    const [value, setValue] = useState(1);
 
     async function handleApply() {
         if (!image) {
@@ -22,12 +21,11 @@ export function ContrastTransform() {
         }
 
         try {
-            setTransform("contrast");
+            setTransform("brightness");
 
-            const result = await worker.ApplyContrast(
+            const result = await worker.ApplyBrightness(
                 Comlink.transfer(image, [image.data.buffer]),
-                rangeA,
-                rangeB
+                value,
             );
 
             setImage(result);
@@ -40,40 +38,25 @@ export function ContrastTransform() {
         <Item variant="outline" className="w-full">
             <ItemHeader>
                 <ItemTitle className="flex items-center gap-2">
-                    <Contrast className="size-4" />
-                    Transformação de Contraste
+                    <Sparkle className="size-4" />
+                    Transformação de brilho
                 </ItemTitle>
             </ItemHeader>
 
             <ItemContent className="space-y-4">
                 <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm font-medium">
-                        <span>Faixa 1</span>
+                        <span>Valor</span>
                         <span className="text-muted-foreground">
-                            {rangeA.join(", ")}
+                            {value.toFixed(2)}
                         </span>
                     </div>
-                    <RangeSlider
-                        max={255}
+                    <ValueSlider
+                        max={1}
                         min={0}
-                        step={1}
-                        values={rangeA}
-                        setValues={setRangeA}
-                    />
-                </div>
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm font-medium">
-                        <span>Faixa 2</span>
-                        <span className="text-muted-foreground">
-                            {rangeB.join(", ")}
-                        </span>
-                    </div>
-                    <RangeSlider
-                        max={255}
-                        min={0}
-                        step={1}
-                        values={rangeB}
-                        setValues={setRangeB}
+                        step={0.05}
+                        value={value}
+                        setValue={setValue}
                     />
                 </div>
                 <div className="flex justify-end pt-2">
