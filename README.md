@@ -1,115 +1,155 @@
 # Fotoxop
 
-Editor de imagens simplificado, com transformações geométricas e de intensidade.
+Editor de imagens simplificado com suporte a transformações geométricas
+e de intensidade.
 
-## Transformações geométricas
-- Rotação (em torno do centro, com escala para preenchimento)
-- Recorte/Crop (com escala)
-- Translação (em progresso...)
+## Funcionalidades
 
-## Transformações de intensidade
-- Inversa
-- Gamma
-- Modulação de contraste
-- Brilho
-- Logarítimica
-- Curva de intensidade (com interpolação Catmull-Rom)
+### Transformações geométricas
+
+-   Rotação (em torno do centro, com escala para preenchimento)
+-   Recorte (crop com escala)
+-   Translação (em progresso)
+
+### Transformações de intensidade
+
+-   Inversão de cores
+-   Correção gamma
+-   Modulação de contraste
+-   Ajuste de brilho
+-   Transformação logarítmica
+-   Curva de intensidade (interpolação Catmull-Rom)
 
 ## Arquitetura
-Embora o ecossistema JS não tenha tantas ferramentas como o Python para manipulação de imagens, ainda é possível aproveitar a API
-do `canvas`, que lida com carregamento e manipulação de imagens.<br/>
-<br/>
-Utilizando o objeto `ImageData`, é possível manipular os dados de uma imagem como um vetor que armazena os valores `R, G, B, A` de cada pixel.
-Todas as funções de transformação são aplicadas percorrendo o vetor de pixels da imagem.
-<br/> <br/>
-Aplicar transformações em imagens (principalmente nas grandes) é um processo caro. Para evitar o congelamento da UI,
-o processamento pesado foi movido para um WebWorker, que executa em uma thread separada.
+
+O projeto utiliza a API de `canvas` do navegador para carregamento e
+manipulação de imagens.
+
+A imagem é representada por um objeto `ImageData`, que armazena os
+valores **RGBA** de cada pixel em um vetor linear. Todas as
+transformações são aplicadas percorrendo esse vetor.
+
+Como o processamento de imagens pode ser custoso, especialmente para
+imagens grandes, as operações mais pesadas são executadas em um **Web
+Worker**, evitando o bloqueio da interface.
+
 
 ## Instalação e execução
-O runtime `bun` precisa estar instalado (https://bun.sh). <br/>
-<br/>
-Clone este repositório e abra o terminal na raiz do projeto.
-```bash
+
+É necessário ter o runtime Bun instalado: https://bun.sh
+
+``` bash
 bun install
 ```
-```bash
+
+``` bash
 bun run dev
 ```
-Acesse o endereço http://localhost:5173 no navegador.
+
+Acesse no navegador: http://localhost:5173
+
 
 ## Guia de uso
-Ao acessar a URL do aplicativo no navegador, um canvas vazio será criado, aguardando a seleção de uma imagem para maniuplar.<br/>
-Após selecionar uma imagem, o menu lateral exibirá as possíveis transformações e ações complementares (baixar ou excluir imagem e mudança de tema do app).<br/>
-<br/>
 
-<figure>
-  <img title="Home" alt="Tela inicial" src="/docs/home.png"/>
-  <caption>Tela inical</caption>
-</figure>
+Ao abrir a aplicação: 
+- Um canvas vazio será exibido
+- Selecione uma imagem
+- O menu lateral exibirá as transformações disponíveis e ações adicionais (download, exclusão, tema)
 
-<br/>
-<br/>
+## Tela inicial
 
-> Importante: Algumas transformações não podem ser desfeitas!
-<br/>
-Transformações de intensidade, com exceção da curva de intensidade, possuem um input para os parâmetros (se existirem), com um botão de aplicação direta.<br/>
-Transformações geométricas e a curva de intensidade possuem uma interface com mais interações, que permitem uma melhor configuração antes da aplicação.<br/>
-<br/>
 
-#### Recorte
-<div>
-  Permite recortar a imagem utilizando os pontos delimitadores.<br/>
-<figure>
-  <img title="Recorte" alt="Interface de recorte" src="/docs/crop.png"/>
-  <caption>Interface de recorte</caption>
-</figure>
+<p align="center">
+  <img src="/docs/home.png" alt="Tela inicial" />
+</p>
+<p align="center">
+  <em>Tela inicial do aplicativo</em>
+</p>
 
-<figure>
-  <img title="Recorte (pós aplicação)" alt="Interface de recorte" src="/docs/crop_after.png"/>
-  <caption>Image pós recorte</caption>
-</figure>
-</div>
 
-#### Rotação
-<div>
-  Permite recortar a imagem utilizando os pontos delimitadores.<br/>
-<figure>
-  <img title="Recorte" alt="Interface de recorte" src="/docs/rotate.png"/>
-  <caption>Interface de recorte</caption>
-</figure>
+> Importante: algumas transformações não podem ser desfeitas.
 
-<figure>
-  <img title="Recorte (pós aplicação)" alt="Interface de recorte" src="/docs/rotate_during.png"/>
-  <caption>Image pós recorte</caption>
-</figure>
+Transformações de intensidade (exceto curva) possuem aplicação direta
+via parâmetros.
 
-<figure>
-  <img title="Recorte (pós aplicação)" alt="Interface de recorte" src="/docs/rotate_after.png"/>
-  <caption>Image pós recorte</caption>
-</figure>
-</div>
+Transformações geométricas e curva de intensidade possuem interface
+interativa para configuração antes da aplicação.
 
-#### Inversa
-<div>
-  Permite recortar a imagem utilizando os pontos delimitadores.<br/>
-<figure>
-  <img title="Recorte" alt="Interface de recorte" src="/docs/inverse.png"/>
-  <caption>Interface de recorte</caption>
-</figure>
 
-</div>
+## Recorte (Crop)
 
-#### Curva de intensidade
-<div>
-  Permite recortar a imagem utilizando os pontos delimitadores.<br/>
-<figure>
-  <img title="Recorte" alt="Interface de recorte" src="/docs/tone.png"/>
-  <caption>Interface de recorte</caption>
-</figure>
+Permite selecionar uma região da imagem utilizando pontos delimitadores.
 
-<figure>
-  <img title="Recorte (pós aplicação)" alt="Interface de recorte" src="/docs/tone_after.png"/>
-  <caption>Image pós recorte</caption>
-</figure>
-</div>
 
+<p align="center">
+  <img src="/docs/crop.png" alt="Interface de recorte" />
+</p>
+<p align="center">
+  <em>Interface de recorte</em>
+</p>
+<p align="center">
+  <img src="/docs/crop_after.png" alt="Resultado do recorte" />
+</p>
+
+<p align="center">
+  <em>Imagem após o recorte</em>
+</p>
+
+
+
+## Rotação
+
+Permite rotacionar a imagem em torno do centro com ajuste de escala. O frame será ajustado automaticamente.
+
+<p align="center">
+  <img src="/docs/rotate.png" alt="Interface de rotação" />
+</p>
+<p align="center">
+  <em>Interface de rotação</em>
+</p>
+
+<p align="center">
+  <img src="/docs/rotate_during.png" alt="Rotação em andamento" />
+</p>
+<p align="center">
+  <em>Rotação em andamento</em>
+</p>
+
+<p align="center">
+  <img src="/docs/rotate_after.png" alt="Resultado da rotação" />
+</p>
+<p align="center">
+  <em>Imagem após rotação</em>
+</p>
+
+
+## Inversão de cores
+
+Aplica a transformação inversa na imagem.
+
+<p align="center">
+  <img src="/docs/inverse.png" alt="Transformação inversa" />
+</p>
+<p align="center">
+  <em>Resultado da inversão de cores</em>
+</p>
+
+
+## Curva de intensidade
+
+Permite ajustar a intensidade dos pixels por meio de uma curva
+interpolada.
+
+<p align="center">
+  <img src="/docs/tone.png" alt="Interface da curva de intensidade" />
+</p>
+<p align="center">
+  <em>Interface de ajuste da curva</em>
+</p>
+
+<p align="center">
+  <img src="/docs/tone_after.png" alt="Resultado da curva de intensidade" />
+</p>
+<p align="center">
+  <em>Imagem após aplicação da curva</em>
+</p>
