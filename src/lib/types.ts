@@ -9,11 +9,12 @@ export type Point = {
 export type Scale = ScaleLinear<number, number, never>;
 
 export type ImageTransform =
-    | "inverse"
-    | "rotate"
-    | "gamma"
-    | "log"
-    | "contrast"
-    | "curve"
-    | "crop"
-    | "brightness";
+	| "inverse"
+	| "rotate"
+	| "gamma"
+	| "log"
+	| "contrast"
+	| "curve"
+	| "crop"
+	| "brightness"
+	| "translate";

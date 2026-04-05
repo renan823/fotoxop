@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
 import { useImage } from "@/context/image";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
-import { Crop } from "lucide-react";
+import { Move } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Point } from "@/lib/types";
 import { useWorker } from "@/hooks/use-worker";
@@ -13,31 +13,31 @@ import { CropManager } from "@/lib/transforms";
 import { Spinner } from "@/components/ui/spinner";
 import { ImageFrame } from "../image/frame";
 
-export function CropTransform() {
+export function TranslationTransform() {
     const { transform, setTransform, loading } = useImage();
 
     return (
         <Item variant="outline" className="w-full">
             <ItemHeader>
                 <ItemTitle className="flex items-center gap-2">
-                    <Crop className="size-4" />
-                    Cortar
+                    <Move className="size-4" />
+                    Mover
                 </ItemTitle>
             </ItemHeader>
 
             <ItemContent className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                    Recortar a imagem
+                    Mover a imagem
                 </p>
                 <div className="flex justify-end pt-2">
                     <Button
                         disabled={loading}
                         onClick={() =>
-                            setTransform(transform !== "crop" ? "crop" : null)
+                            setTransform(transform !== "translate" ? "translate" : null)
                         }
-                        variant={transform !== "crop" ? "default" : "outline"}
+                        variant={transform !== "translate" ? "default" : "outline"}
                     >
-                        {transform === "crop" ? "Feito" : "Aplicar"}
+                        {transform === "translate" ? "Feito" : "Aplicar"}
                     </Button>
                 </div>
             </ItemContent>
@@ -45,7 +45,7 @@ export function CropTransform() {
     );
 }
 
-export function CropHandle() {
+export function TranslateHandle() {
     const { ref, size } = useContainerSize();
     const {
         frame,
@@ -79,7 +79,7 @@ export function CropHandle() {
 
         try {
             setLoading(true);
-            setTransform("crop");
+            setTransform("translate");
 
             const scaleX = image.width / 100;
             const scaleY = image.height / 100;
@@ -134,7 +134,7 @@ export function CropHandle() {
             className="pointer-events-auto relative z-10 flex h-full w-full items-center justify-center bg-muted/50"
         >
             <svg ref={svgRef} width={width} height={height}>
-            	<ImageFrame xScale={xScale} yScale={yScale}/>
+                <ImageFrame xScale={xScale} yScale={yScale}/>
             </svg>
             <div className="pointer-events-auto absolute z-20 space-y-2 bg-muted/50 px-8 py-4">
                 <div className="flex justify-center">
@@ -145,7 +145,7 @@ export function CropHandle() {
                         </Button>
                     ) : (
                         <Button onClick={handleApply}>
-                            <Crop />
+                            <Move />
                             Aplicar
                         </Button>
                     )}

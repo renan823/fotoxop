@@ -9,6 +9,7 @@ import { CropTransform } from "./crop";
 import { BrightnessTransform } from "./brightness";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Ruler, WandSparkles } from "lucide-react";
+import { TranslationTransform } from "./translation";
 
 export function TransformSettings() {
     return (
@@ -27,11 +28,12 @@ export function TransformSettings() {
                 <div className="space-y-4 pb-4">
                     <RotateTransform />
                     <CropTransform />
+                    <TranslationTransform />
                 </div>
             </TabsContent>
             <TabsContent value="intensity">
                 <ScrollArea className="h-[75vh]">
-                    <div className="space-y-4 pb-4 pr-4">
+                    <div className="space-y-4 pr-4 pb-4">
                         <ToneCurveTransform />
                         <InverseTransform />
                         <BrightnessTransform />

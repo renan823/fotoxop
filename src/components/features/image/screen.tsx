@@ -13,6 +13,7 @@ import { ImageCanvas } from "./canvas";
 import { ToneCurveTransformHandle } from "../transforms/tone-curve";
 import { RotateTransformHandle } from "../transforms/rotate";
 import { CropHandle } from "../transforms/crop";
+import { TranslateHandle } from "../transforms/translation";
 
 /*
 Componente para exibir o canvas
@@ -50,6 +51,7 @@ export function EditorScreen() {
                 {transform === "rotate" && <RotateTransformHandle />}
                 {transform === "curve" && <ToneCurveTransformHandle />}
                 {transform === "crop" && <CropHandle />}
+                {transform === "translate" && <TranslateHandle />}
             </div>
         </div>
     );

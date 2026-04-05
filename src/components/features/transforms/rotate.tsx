@@ -1,17 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { useImage } from "@/context/image";
 import { RefreshCcw } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { ValueSlider } from "../utils";
 import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { useContainerSize } from "@/hooks/use-size";
-import * as d3 from "d3";
 import { useWorker } from "@/hooks/use-worker";
 import * as Comlink from "comlink";
 import { toast } from "sonner";
 import { CropManager, RotateManager } from "@/lib/transforms";
 import type { Point } from "@/lib/types";
 import { Spinner } from "@/components/ui/spinner";
+import { scaleLinear } from "d3";
+import { ImageFrame } from "../image/frame";
 
 export function RotateTransform() {
     const { transform, setTransform, loading } = useImage();
@@ -51,7 +52,6 @@ export function RotateTransform() {
 export function RotateTransformHandle() {
     const { ref, size } = useContainerSize();
     const {
-        frame,
         setFrame,
         rotation,
         setRotation,
@@ -60,51 +60,21 @@ export function RotateTransformHandle() {
         setTransform,
         loading,
         setLoading,
-    } = useImage();
-
-    const svgRef = useRef<SVGSVGElement | null>(null);
+	} = useImage();
+    
     const worker = useWorker();
 
     const width = size.width;
     const height = size.height;
 
     const xScale = useMemo(
-        () => d3.scaleLinear().domain([0, 100]).range([0, width]),
+        () => scaleLinear().domain([0, 100]).range([0, width]),
         [width]
     );
     const yScale = useMemo(
-        () => d3.scaleLinear().domain([0, 100]).range([height, 0]),
+        () => scaleLinear().domain([0, 100]).range([height, 0]),
         [height]
     );
-
-    const lines = useMemo(() => {
-        return [
-            {
-                x1: xScale(frame[0].x),
-                y1: yScale(frame[0].y),
-                x2: xScale(frame[1].x),
-                y2: yScale(frame[0].y),
-            },
-            {
-                x1: xScale(frame[1].x),
-                y1: yScale(frame[0].y),
-                x2: xScale(frame[1].x),
-                y2: yScale(frame[1].y),
-            },
-            {
-                x1: xScale(frame[1].x),
-                y1: yScale(frame[1].y),
-                x2: xScale(frame[0].x),
-                y2: yScale(frame[1].y),
-            },
-            {
-                x1: xScale(frame[0].x),
-                y1: yScale(frame[1].y),
-                x2: xScale(frame[0].x),
-                y2: yScale(frame[0].y),
-            },
-        ];
-    }, [frame, xScale, yScale]);
 
     useEffect(() => setFrame(CropManager.init()), [setFrame]);
 
@@ -161,28 +131,8 @@ export function RotateTransformHandle() {
             ref={ref}
             className="relative z-10 flex h-full w-full items-center justify-center"
         >
-            <svg ref={svgRef} width={width} height={height}>
-                {frame.map((p) => (
-                    <circle
-                        key={p.id}
-                        cx={xScale(p.x)}
-                        cy={yScale(p.y)}
-                        style={{ cursor: "pointer" }}
-                        r={8}
-                        fill="yellow"
-                    />
-                ))}
-                {lines.map((l, idx) => (
-                    <line
-                        key={idx}
-                        x1={l.x1}
-                        y1={l.y1}
-                        x2={l.x2}
-                        y2={l.y2}
-                        stroke="yellow"
-                        strokeWidth={4}
-                    />
-                ))}
+            <svg width={width} height={height}>
+            	<ImageFrame xScale={xScale} yScale={yScale}/>
             </svg>
             <div className="pointer-events-auto absolute z-20 w-1/3 space-y-2 rounded-sm bg-muted/50 p-4">
                 <div className="flex items-center justify-between text-sm font-medium">
