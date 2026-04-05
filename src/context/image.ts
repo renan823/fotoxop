@@ -1,5 +1,5 @@
 import { CropManager } from "@/lib/transforms";
-import type { ImageTransform, Point } from "@/lib/types";
+import type { ImageTransform, Point, Vec2 } from "@/lib/types";
 import { create } from "zustand";
 
 /*
@@ -12,29 +12,30 @@ da imagem.
 
 type ImageStore = {
     image: ImageData | null;
-    preview: ImageData | null;
     transform: ImageTransform | null;
     rotation: number;
     frame: Point[];
-	curvePoints: Point[];
-	loading: boolean;
+    curvePoints: Point[];
+    translation: Vec2;
+    loading: boolean;
 
     setImage: (image: ImageData) => void;
     setTransform: (transform: ImageTransform | null) => void;
     setRotation: (r: number) => void;
     setFrame: (frame: Point[]) => void;
-	setCurvePoints: (points: Point[]) => void;
-	setLoading: (loading: boolean) => void;
+    setCurvePoints: (points: Point[]) => void;
+    setTranslation: (value: Vec2 | ((prev: Vec2) => Vec2)) => void;
+    setLoading: (loading: boolean) => void;
     clean: () => void;
 };
 
 export const useImage = create<ImageStore>((set) => ({
     image: null,
-    preview: null,
     transform: null,
     rotation: 0,
     frame: CropManager.init(),
-	curvePoints: [],
+    curvePoints: [],
+    translation: { x: 0, y: 0 },
     loading: false,
 
     setImage: (img) => {
@@ -55,16 +56,27 @@ export const useImage = create<ImageStore>((set) => ({
 
     setCurvePoints: (points) => {
         set({ curvePoints: points });
-	},
-    
-	setLoading: (loading) => {
-		set({ loading });
-	},
+    },
 
-	clean: () =>
+    setTranslation: (value) => {
+        set((state) => ({
+            translation:
+                typeof value === "function" ? value(state.translation) : value,
+        }));
+    },
+
+    setLoading: (loading) => {
+        set({ loading });
+    },
+
+    clean: () =>
         set({
             image: null,
-            preview: null,
             transform: null,
+            rotation: 0,
+            frame: CropManager.init(),
+            curvePoints: [],
+            translation: { x: 0, y: 0 },
+            loading: false,
         }),
 }));

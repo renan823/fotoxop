@@ -27,9 +27,9 @@ export function ImageCanvas() {
             return;
         }
 
-        screen.width = image.width;
-        screen.height = image.height;
-
+		screen.width = image.width;
+		screen.height = image.height;
+		
         ctx.putImageData(image, 0, 0);
     }, [image]);
 

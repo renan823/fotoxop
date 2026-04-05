@@ -6,9 +6,6 @@ import { Item, ItemContent, ItemHeader, ItemTitle } from "@/components/ui/item";
 import { Move } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Point } from "@/lib/types";
-import { useWorker } from "@/hooks/use-worker";
-import { toast } from "sonner";
-import * as Comlink from "comlink";
 import { CropManager } from "@/lib/transforms";
 import { Spinner } from "@/components/ui/spinner";
 import { ImageFrame } from "../image/frame";
@@ -26,16 +23,18 @@ export function TranslationTransform() {
             </ItemHeader>
 
             <ItemContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                    Mover a imagem
-                </p>
+                <p className="text-sm text-muted-foreground">Mover a imagem</p>
                 <div className="flex justify-end pt-2">
                     <Button
                         disabled={loading}
                         onClick={() =>
-                            setTransform(transform !== "translate" ? "translate" : null)
+                            setTransform(
+                                transform !== "translate" ? "translate" : null
+                            )
                         }
-                        variant={transform !== "translate" ? "default" : "outline"}
+                        variant={
+                            transform !== "translate" ? "default" : "outline"
+                        }
                     >
                         {transform === "translate" ? "Feito" : "Aplicar"}
                     </Button>
@@ -50,15 +49,10 @@ export function TranslateHandle() {
     const {
         frame,
         setFrame,
-        image,
-        setImage,
-        setTransform,
-        loading,
-        setLoading,
+		loading,
     } = useImage();
 
     const svgRef = useRef<SVGSVGElement | null>(null);
-    const worker = useWorker();
 
     const width = size.width;
     const height = size.height;
@@ -73,35 +67,7 @@ export function TranslateHandle() {
     );
 
     async function handleApply() {
-        if (!image) {
-            return;
-        }
-
-        try {
-            setLoading(true);
-            setTransform("translate");
-
-            const scaleX = image.width / 100;
-            const scaleY = image.height / 100;
-
-            const converted = frame.map((p) => ({
-                ...p,
-                x: Math.round(p.x * scaleX),
-                y: Math.round((100 - p.y) * scaleY),
-            }));
-
-            const result = await worker.ApplyCrop(
-                Comlink.transfer(image, [image.data.buffer]),
-                converted
-            );
-
-            setImage(result);
-            setFrame(CropManager.init());
-        } catch {
-            toast.error("Algo deu errado");
-        } finally {
-            setLoading(false);
-        }
+        
     }
 
     useEffect(() => {
@@ -134,9 +100,14 @@ export function TranslateHandle() {
             className="pointer-events-auto relative z-10 flex h-full w-full items-center justify-center bg-muted/50"
         >
             <svg ref={svgRef} width={width} height={height}>
-                <ImageFrame xScale={xScale} yScale={yScale}/>
+                <ImageFrame xScale={xScale} yScale={yScale} />
             </svg>
             <div className="pointer-events-auto absolute z-20 space-y-2 bg-muted/50 px-8 py-4">
+                <p className="text-center">
+                    Use as setas do teclado para mover a imagem
+                    <br />
+                    Ajuste a área desejada com crop
+                </p>
                 <div className="flex justify-center">
                     {loading ? (
                         <Button disabled>
