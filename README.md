@@ -1,7 +1,10 @@
 # Fotoxop
 
-Editor de imagens simplificado com suporte a transformações geométricas
-e de intensidade.
+FOTOXOP - App genérico de edição de imagens (Adobe não me processa)<br><br>
+Renan Trofino Silva - 15522316 <br>
+BCC - 5° semestre <br>
+Profa. Leo Sampaio Ferraz Ribeiro <br>
+[Link do repositório](https://github.com/renan823/fotoxop)
 
 ## Funcionalidades
 
@@ -220,16 +223,3 @@ Aplica a transformação de brilho.
 <p align="center">
   <em>Resultado da transformação brilho</em>
 </p>
-
-</br>
-
-<p align="center">
-	FOTOXOP - App genérico de edição de imagens (Adobe não me processa)
-	Renan Trofino Silva - 15522316
-	BCC - 5° semestre
-	Profa. Leo Sampaio Ferraz Ribeiro
-</p>
-
-</br>
-
-[Link do repositório](https://github.com/renan823/fotoxop)
