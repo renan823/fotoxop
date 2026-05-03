@@ -1,6 +1,13 @@
+/*
+FOTOXOP - App genérico de edição de imagens (Adobe não me processa)
+Renan Trofino Silva - 15522316
+BCC - 5° semestre
+Profa. Leo Sampaio Ferraz Ribeiro
+*/
+
 import { Toolbar } from "@/components/features/toolbar"
-import { ImageHistogram } from "./components/features/image/histogram"
-import { EditorScreen } from "./components/features/image/screen"
+import { ImageHistogram } from "@/components/features/image/histogram"
+import { EditorScreen } from "@/components/features/image/screen"
 
 export function App() {
 	return (

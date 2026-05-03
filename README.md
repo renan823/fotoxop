@@ -220,3 +220,13 @@ Aplica a transformação de brilho.
 <p align="center">
   <em>Resultado da transformação brilho</em>
 </p>
+
+</br>
+
+<p align="center">
+	Feito por Renan :)
+</p>
+
+</br>
+
+[Link do repositório](https://github.com/renan823/fotoxop)
