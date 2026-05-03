@@ -8,6 +8,10 @@ import { toast } from "sonner";
 import { ValueSlider } from "../utils";
 import { useWorker } from "@/hooks/use-worker";
 
+/*
+Componente para aplicar a transformação gamma.
+Permite alterar os valores aplicados via input.
+*/
 export function GammaTransform() {
     const { image, setImage, setTransform, loading } = useImage();
 

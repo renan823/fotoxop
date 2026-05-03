@@ -8,6 +8,10 @@ import { toast } from "sonner";
 import * as Comlink from "comlink";
 import { useWorker } from "@/hooks/use-worker";
 
+/*
+Componente para aplicar a transformação de contraste.
+Permite alterar os ranges de valores via input.
+*/
 export function ContrastTransform() {
     const { image, setImage, setTransform, loading } = useImage();
 

@@ -10,9 +10,15 @@ são carregados.
 As atualizações são automáticas, já que
 o canvas é atualizado sempre que o estado
 global da imagem muda.
+
+O valor da translação é usado como um "preview"
+do que será feito pela transalção real.
+Aplicar esse preview aqui é mais barato que
+recalcular tudo a cada movimento do tx e ty.
+Provavelmente por causa do webgl (fonte: ?)
 */
 export function ImageCanvas() {
-    const { image } = useImage();
+    const { image, translation } = useImage();
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -30,8 +36,8 @@ export function ImageCanvas() {
 		screen.width = image.width;
 		screen.height = image.height;
 		
-        ctx.putImageData(image, 0, 0);
-    }, [image]);
+        ctx.putImageData(image, translation.x, translation.y);
+    }, [image, translation]);
 
     return <canvas ref={canvasRef} className="h-full w-full" />;
 }

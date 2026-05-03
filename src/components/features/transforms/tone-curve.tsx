@@ -9,6 +9,11 @@ import type { Point } from "@/lib/types";
 import { useWorker } from "@/hooks/use-worker";
 import { ToneCurveManager } from "@/lib/transforms";
 
+/*
+Componente para aplicar a curva de intensidade
+Permite alterar a escala manualmente, com a movimentação
+dos pontos dentro do frame.
+*/
 export function ToneCurveTransform() {
     const { transform, setTransform, loading } = useImage();
 
@@ -53,7 +58,7 @@ criando uma curva.
 Os valores serão interpolados pra gerar a
 curva de intensidades.
 
-Pra lidar com drga mais fácil, usei a lib d3
+Pra lidar com drag mais fácil, usei a lib d3
 que permite criar as escalas, linhas e renderizar.
 https://d3js.org/d3-drag
  */
@@ -100,6 +105,7 @@ export function ToneCurveTransformHandle() {
                     return;
                 }
 
+                // Só muda os pontos, não aplica ainda
                 const points = useImage.getState().curvePoints;
                 const [px, py] = d3.pointer(event, svgRef.current);
                 const newPoints = ToneCurveManager.move(
@@ -118,6 +124,8 @@ export function ToneCurveTransformHandle() {
                     return;
                 }
 
+                // Quando a curva patra de se mexer, o worker aplica.
+                // Em teoria é reversível (?)
                 const points = useImage.getState().curvePoints;
                 const result = await worker.ApplyCurve(image, points);
                 setImage(result);

@@ -18,6 +18,7 @@ uma thread separada.
 Sem usar workers, a thread principal congela
 durante operações mais pesadas (aqui, todas são
 relativamente pesadas).
+Ainda assim, certas operação VÃO demorar.
 */
 export const TransformWorker = {
     ApplyBrightness(image: ImageData, value: number): ImageData {

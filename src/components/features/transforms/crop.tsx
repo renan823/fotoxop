@@ -13,6 +13,11 @@ import { CropManager } from "@/lib/transforms";
 import { Spinner } from "@/components/ui/spinner";
 import { ImageFrame } from "../image/frame";
 
+/*
+Componente para aplicar a transformação de corte.
+Permite escolher um novo frame para imagem, cortando e
+aplicando um escala na imagem original.
+*/
 export function CropTransform() {
     const { transform, setTransform, loading } = useImage();
 
@@ -45,6 +50,12 @@ export function CropTransform() {
     );
 }
 
+/*
+Componente que permite mover o frame e ajustar
+a área que sera "cortada".
+A escala é aplicada para preencher o tamanho total
+do canvas, já que a imagem pode ficar bem pequena.
+*/
 export function CropHandle() {
     const { ref, size } = useContainerSize();
     const {
@@ -84,6 +95,7 @@ export function CropHandle() {
             const scaleX = image.width / 100;
             const scaleY = image.height / 100;
 
+            // Pontos convertidos na escala
             const converted = frame.map((p) => ({
                 ...p,
                 x: Math.round(p.x * scaleX),
@@ -104,6 +116,7 @@ export function CropHandle() {
         }
     }
 
+    // Movimento dos pontos
     useEffect(() => {
         if (!svgRef.current) {
             return;

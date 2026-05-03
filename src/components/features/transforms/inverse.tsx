@@ -6,6 +6,9 @@ import * as Comlink from "comlink";
 import { useWorker } from "@/hooks/use-worker";
 import { toast } from "sonner";
 
+/*
+Componente para aplicar a transformação inversa.
+*/
 export function InverseTransform() {
     const { image, setImage, setTransform, loading } = useImage();
 

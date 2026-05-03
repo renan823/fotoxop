@@ -6,6 +6,9 @@ import { toast } from "sonner";
 import * as Comlink from "comlink";
 import { useWorker } from "@/hooks/use-worker";
 
+/*
+Componente para aplicar a transformação logarítmica.
+*/
 export function LogTransform() {
     const { image, setImage, setTransform, loading } = useImage();
 

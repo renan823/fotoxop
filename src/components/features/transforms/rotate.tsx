@@ -14,6 +14,11 @@ import { Spinner } from "@/components/ui/spinner";
 import { scaleLinear } from "d3";
 import { ImageFrame } from "../image/frame";
 
+/*
+Componente para aplicar a transformação de rotação.
+Permite alterar o ângulo de rotação.
+Exibe uma prévia do novo frame recortado da imagem.
+*/
 export function RotateTransform() {
     const { transform, setTransform, loading } = useImage();
 
@@ -49,6 +54,11 @@ export function RotateTransform() {
     );
 }
 
+/*
+Componente que permite interagir com a rotação,
+selecionando o valor do ângulo.
+O frame exibe a prévia do novo formato da imagem.
+*/
 export function RotateTransformHandle() {
     const { ref, size } = useContainerSize();
     const {

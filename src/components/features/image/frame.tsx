@@ -7,6 +7,11 @@ interface ImageFrameProps {
     yScale: Scale;
 }
 
+/*
+Componente que renderiza o frame (bordas amarelas)
+da imagem.
+Permite ver o tamanho da imagem após certas transformações.
+*/
 export function ImageFrame({ xScale, yScale }: ImageFrameProps) {
     const { frame } = useImage();
 

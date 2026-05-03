@@ -38,7 +38,8 @@ export function TransformSettings() {
                         <InverseTransform />
                         <BrightnessTransform />
                         <GammaTransform />
-                        <LogTransform />
+						<LogTransform />
+                        <BrightnessTransform/>
                         <ContrastTransform />
                     </div>
                 </ScrollArea>

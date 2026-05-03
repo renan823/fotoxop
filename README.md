@@ -76,6 +76,26 @@ Transformações geométricas e curva de intensidade possuem interface
 interativa para configuração antes da aplicação.
 
 
+## Curva de intensidade
+
+Permite ajustar a intensidade dos pixels por meio de uma curva
+interpolada.
+
+<p align="center">
+  <img src="/docs/tone.png" alt="Interface da curva de intensidade" />
+</p>
+<p align="center">
+  <em>Interface de ajuste da curva</em>
+</p>
+
+<p align="center">
+  <img src="/docs/tone_after.png" alt="Resultado da curva de intensidade" />
+</p>
+<p align="center">
+  <em>Imagem após aplicação da curva</em>
+</p>
+
+
 ## Recorte (Crop)
 
 Permite selecionar uma região da imagem utilizando pontos delimitadores.
@@ -123,6 +143,25 @@ Permite rotacionar a imagem em torno do centro com ajuste de escala. O frame ser
 </p>
 
 
+## Translação
+
+Permite mover o frame da imagem e movê-la usando as setas do teclado. Após o movimento, a imagem será cortada na posição correta.
+
+<p align="center">
+  <img src="/docs/translate_before.png" alt="Interface da translação" />
+</p>
+<p align="center">
+  <em>Interface da translação</em>
+</p>
+
+<p align="center">
+  <img src="/docs/translate_after.png" alt="Imagem pós translação" />
+</p>
+<p align="center">
+  <em>Imagem pós translação</em>
+</p>
+
+
 ## Inversão de cores
 
 Aplica a transformação inversa na imagem.
@@ -135,21 +174,49 @@ Aplica a transformação inversa na imagem.
 </p>
 
 
-## Curva de intensidade
+## Transformação gamma
 
-Permite ajustar a intensidade dos pixels por meio de uma curva
-interpolada.
-
-<p align="center">
-  <img src="/docs/tone.png" alt="Interface da curva de intensidade" />
-</p>
-<p align="center">
-  <em>Interface de ajuste da curva</em>
-</p>
+Aplica a transformação gamma na imagem.
 
 <p align="center">
-  <img src="/docs/tone_after.png" alt="Resultado da curva de intensidade" />
+  <img src="/docs/gamma.png" alt="Transformação gamma" />
 </p>
 <p align="center">
-  <em>Imagem após aplicação da curva</em>
+  <em>Resultado da transformação gamma</em>
+</p>
+
+
+## Transformação log
+
+Aplica a transformação log na imagem.
+
+<p align="center">
+  <img src="/docs/log.png" alt="Transformação log" />
+</p>
+<p align="center">
+  <em>Resultado da transformação log</em>
+</p>
+
+
+## Transformação de contraste
+
+Aplica a transformação de contraste.
+
+<p align="center">
+  <img src="/docs/contrast.png" alt="Transformação contraste" />
+</p>
+<p align="center">
+  <em>Resultado da transformação contraste</em>
+</p>
+
+
+## Transformação de brilho
+
+Aplica a transformação de brilho.
+
+<p align="center">
+  <img src="/docs/brightness.png" alt="Transformação brilho" />
+</p>
+<p align="center">
+  <em>Resultado da transformação brilho</em>
 </p>

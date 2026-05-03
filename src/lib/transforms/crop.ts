@@ -50,7 +50,7 @@ export class CropTransform {
 
 /*
 Classe que agrupa rotinas usadas na manipulação
-do rop na imagem.
+do crop na imagem.
 */
 export class CropManager {
     /*

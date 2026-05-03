@@ -8,6 +8,10 @@ import { toast } from "sonner";
 import { ValueSlider } from "../utils";
 import { useWorker } from "@/hooks/use-worker";
 
+/*
+Componente para aplicar a transformação de brilho.
+Permite alterar o valor aplicado via input.
+*/
 export function BrightnessTransform() {
     const { image, setImage, setTransform, loading } = useImage();
 
