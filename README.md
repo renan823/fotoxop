@@ -224,7 +224,10 @@ Aplica a transformação de brilho.
 </br>
 
 <p align="center">
-	Feito por Renan :)
+	FOTOXOP - App genérico de edição de imagens (Adobe não me processa)
+	Renan Trofino Silva - 15522316
+	BCC - 5° semestre
+	Profa. Leo Sampaio Ferraz Ribeiro
 </p>
 
 </br>
