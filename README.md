@@ -1,9 +1,9 @@
 # Fotoxop
 
-FOTOXOP - App genérico de edição de imagens (Adobe não me processa)<br><br>
-Renan Trofino Silva - 15522316 <br>
-BCC - 5° semestre <br>
-Profa. Leo Sampaio Ferraz Ribeiro <br>
+FOTOXOP - App genérico de edição de imagens (Adobe não me processa)<br>
+Renan Trofino Silva - 15522316
+BCC - 5° semestre
+Profa. Leo Sampaio Ferraz Ribeiro
 [Link do repositório](https://github.com/renan823/fotoxop)
 
 ## Funcionalidades
